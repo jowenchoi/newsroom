@@ -41,4 +41,6 @@ jobs:
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           git add data
           git commit -m "Update news $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M KST')"
+          # main may have moved while we were collecting (e.g. a site edit); replay on top.
+          git pull --rebase origin main
           git push
