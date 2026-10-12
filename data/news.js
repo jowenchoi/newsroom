@@ -1,5 +1,5 @@
 window.NEWS_DATA = {
- "updated": "2026-10-12T09:49",
+ "updated": "2026-10-12T10:02",
  "ai": [
   {
    "line": "[단독] SK스퀘어, 日 피지컬AI 기업 투자",
@@ -30,7 +30,7 @@ window.NEWS_DATA = {
   },
   {
    "line": "로봇·AI로… 현대차 진화, 경계를 넘다",
-   "url": "https://www.mt.co.kr/industry/2026/10/12/2026101119372011709",
+   "url": "https://www.mt.co.kr/amp/industry/2026/10/12/2026101119372011709",
    "source": "머니투데이",
    "date": "2026-10-12T03:00",
    "image": "https://thumb.mt.co.kr/cdn-cgi/image/f=avif/21/2026/10/2026101119372011709_1.jpg",
@@ -84,11 +84,11 @@ window.NEWS_DATA = {
    "original": "Will ‘boring’ robots win in the real world? Why robotic form should follow workflow"
   },
   {
-   "line": "a16z 투자팀 방한… 한국 반도체·로봇 기업 협력 모색",
-   "url": "https://www.sedaily.com/article/20100305",
-   "source": "서울경제",
-   "date": "2026-10-11T21:17",
-   "image": "https://www.bing.com/th?id=ONUT.FsGPSYgW-fp-svFI8L3NDQ&pid=News&w=640&h=360&c=14",
+   "line": "[AI&] 산불 진화 해법 찾기…국제 청소년 로봇 경진대회 外",
+   "url": "https://www.yna.co.kr/view/MYH20261012002600038",
+   "source": "연합뉴스",
+   "date": "2026-10-11T18:39",
+   "image": "https://www.bing.com/th?id=ONUT.IH3gK51BJQa5cLxN7E3L5w&pid=News&w=640&h=360&c=14",
    "tag": "ROBOTICS",
    "lang": "ko"
   },
@@ -325,7 +325,7 @@ window.NEWS_DATA = {
    "url": "https://www.etnews.com/20261006000208",
    "source": "전자신문",
    "date": "2026-10-06T13:24",
-   "image": "",
+   "image": "https://img.etnews.com/news/article/2026/10/06/news-p.v1.20261006.393650f82fa740e0962c30e119d98a1c_P1.jpg",
    "tag": "두산로보틱스",
    "lang": "ko",
    "company": "두산로보틱스"
