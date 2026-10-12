@@ -1,8 +1,7 @@
 name: Update news
 
+# No schedule: runs only when the site's refresh button (or "Run workflow") asks for it.
 on:
-  schedule:
-    - cron: "50 23,4 * * *"   # 08:50 and 13:50 KST (cron runs in UTC)
   workflow_dispatch:
 
 permissions:

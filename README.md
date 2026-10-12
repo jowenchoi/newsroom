@@ -16,18 +16,21 @@
 
 중복 판별·주가 기사 필터·한 줄 번역은 LLM 편집자가 맡습니다.
 `ANTHROPIC_API_KEY` 시크릿이 있으면 Claude, 없고 `OPENAI_API_KEY`가 있으면 OpenAI
-(모델은 Actions 변수 `OPENAI_MODEL`, 기본 `gpt-4o-mini`), 둘 다 없으면 규칙 기반 필터 + Google 번역으로 동작합니다.
+(기본 `gpt-6-luna`, 안 되면 `gpt-5.4-nano` → `gpt-4o-mini` 순으로 시도. Actions 변수 `OPENAI_MODEL`로 고정 가능),
+둘 다 없으면 규칙 기반 필터 + Google 번역으로 동작합니다. Claude는 `claude-haiku-5-5`를 씁니다.
 
 ## 구성
 - `index.html` — 대시보드 (`data/news.js`를 읽어 렌더링)
 - `manifest.webmanifest`, `icons/` — 휴대폰 홈 화면 바로가기(앱 아이콘)
 - `scripts/fetch_news.py` — 뉴스 수집·편집
-- `.github/workflows/update-news.yml` — 매일 오전 8시 50분·오후 1시 50분(KST) 수집 후 `data/` 커밋 → GitHub Pages 자동 재배포
+- `.github/workflows/update-news.yml` — 뉴스 수집. **예약 실행 없음**: 사이트의 새로고침 버튼(또는 Actions의 Run workflow)을 누를 때만 실행
 
 ## 처음 한 번 설정
 1. Settings → Pages → Build and deployment: **Deploy from a branch**, Branch **main** / **(root)** → Save
 2. (권장) Settings → Secrets and variables → Actions → `ANTHROPIC_API_KEY` 또는 `OPENAI_API_KEY` 추가
-3. Actions → *Update news* → **Run workflow** 로 첫 수집 실행
+3. 사이트 오른쪽 위 **새로고침** 버튼 → 처음 한 번 GitHub 토큰 등록
+   (Fine-grained token, Repository access: newsroom만, Permissions: Actions **Read and write**).
+   토큰은 그 브라우저에만 저장됩니다.
 
 ## 휴대폰 홈 화면에 추가
 - **iPhone (Safari)**: 바로가기 주소 열기 → 공유 버튼 → *홈 화면에 추가*

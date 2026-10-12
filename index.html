@@ -38,6 +38,7 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { background: var(--ink); }
 body {
   margin: 0;
@@ -102,6 +103,64 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
 .bar nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
 .bar nav a:hover { color: var(--red); }
 .bar .note { color: var(--muted); letter-spacing: 0.08em; text-transform: none; font-family: var(--f-body); font-weight: 400; }
+.status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 12px/1 var(--f-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--red-soft);
+  border: 1px solid var(--red);
+  padding: 8px 14px;
+  cursor: pointer;
+}
+.refresh:hover { background: var(--red); }
+.refresh:disabled { cursor: progress; opacity: .75; background: var(--red-soft); }
+.refresh svg { width: 14px; height: 14px; }
+.refresh[aria-busy="true"] svg { animation: spin 1.2s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.panel {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid var(--rule);
+  background: var(--sheet);
+  display: grid;
+  gap: 10px;
+  font-size: 14px;
+  max-width: 640px;
+  margin-left: auto;
+}
+.panel p { margin: 0; color: var(--muted); }
+.panel p b { color: var(--paper); font-weight: 600; }
+.panel ol { margin: 0; padding-left: 20px; color: var(--muted); display: grid; gap: 4px; }
+.panel a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--red); text-underline-offset: 3px; }
+.panel .row { display: flex; flex-wrap: wrap; gap: 8px; }
+.panel input {
+  flex: 1 1 240px;
+  min-width: 0;
+  font: 400 14px/1.4 var(--f-body);
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--rule);
+  padding: 8px 10px;
+}
+.panel input:focus { outline: 2px solid var(--red); outline-offset: 1px; }
+.panel button.plain {
+  font: 600 12px/1 var(--f-label);
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--rule);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.panel button.plain:hover { color: var(--paper); border-color: var(--muted); }
+.msg { color: var(--muted); font-family: var(--f-body); letter-spacing: 0.02em; text-transform: none; font-weight: 400; }
+.msg.err { color: var(--red); }
+@media (prefers-reduced-motion: reduce) { .refresh[aria-busy="true"] svg { animation: none; } }
 
 /* ---------- thumbnails ---------- */
 .thumb {
@@ -317,7 +376,30 @@ footer p { margin: 0; max-width: 60ch; }
       <a href="#rivals">경쟁사</a>
       <a href="#doosan">두산 그룹</a>
     </nav>
-    <span class="note" id="updated"></span>
+    <div class="status">
+      <span class="note" id="updated"></span>
+      <span class="msg" id="refresh-msg" role="status" aria-live="polite"></span>
+      <button type="button" class="refresh" id="refresh-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>
+        새로고침
+      </button>
+    </div>
+  </div>
+  <div class="panel" id="token-panel" hidden>
+    <p><b>처음 한 번만 설정합니다.</b> 새로고침 버튼은 GitHub에서 뉴스 수집을 실행합니다. 실행 권한이 있는 GitHub 토큰이 필요합니다.</p>
+    <ol>
+      <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub 토큰 만들기</a> (Fine-grained token)</li>
+      <li>Repository access: <b>Only select repositories → newsroom</b></li>
+      <li>Permissions → Repository → <b>Actions: Read and write</b> (나머지는 그대로)</li>
+      <li>만든 토큰(github_pat_…)을 아래에 붙여넣기</li>
+    </ol>
+    <div class="row">
+      <input type="password" id="token-input" placeholder="github_pat_..." autocomplete="off" spellcheck="false" aria-label="GitHub 토큰">
+      <button type="button" class="refresh" id="token-save">저장하고 새로고침</button>
+    </div>
+    <p>토큰은 이 기기의 이 브라우저에만 저장되고 다른 곳으로 보내지지 않습니다 (GitHub API 호출에만 사용).
+      토큰 없이 하려면 <a id="run-link" href="#" target="_blank" rel="noopener">GitHub에서 직접 실행</a>하세요.</p>
+    <div class="row"><button type="button" class="plain" id="token-cancel">닫기</button><button type="button" class="plain" id="token-forget" hidden>저장된 토큰 지우기</button></div>
   </div>
 
   <main>
@@ -355,7 +437,14 @@ footer p { margin: 0; max-width: 60ch; }
   </footer>
 </div>
 
-<script>document.write('<script src="data/news.js?v=' + Math.floor(Date.now() / 600000) + '"><\/script>')</script>
+<script>
+// Pages caches files for ~10 minutes; after a refresh the page passes a fresh stamp.
+(function () {
+  let v = Math.floor(Date.now() / 600000);
+  try { v = sessionStorage.getItem("automata.bust") || v; } catch (e) {}
+  document.write('<script src="data/news.js?v=' + v + '"><\/script>');
+})();
+</script>
 <script>
 (function () {
   const data = window.NEWS_DATA || { updated: "", ai: [], doosan: [] };
@@ -491,10 +580,11 @@ footer p { margin: 0; max-width: 60ch; }
 
   // Swap any thumbnail that fails to load for a generated cover.
   function hookFallbacks() {
-    document.querySelectorAll(".thumb[data-fallback] img").forEach(img => {
+    document.querySelectorAll(".thumb[data-fallback] img:not([data-hooked])").forEach(img => {
+      img.dataset.hooked = "1";
       const swap = () => {
         const box = img.parentElement;
-        if (!box || !box.dataset.fallback) return;
+        if (!box || !box.parentNode || !box.dataset.fallback) return;
         const { i, s } = JSON.parse(box.dataset.fallback);
         box.outerHTML = genThumb(i, s);
       };
@@ -504,6 +594,131 @@ footer p { margin: 0; max-width: 60ch; }
   }
 
   hookFallbacks();
+})();
+</script>
+<script>
+// Refresh button: runs the "Update news" workflow on GitHub, waits for it and for
+// GitHub Pages to publish the new data, then reloads. Nothing runs on a schedule.
+(function () {
+  const host = location.hostname.endsWith(".github.io") ? location.hostname.split(".")[0] : "jowenchoi";
+  const repo = (location.hostname.endsWith(".github.io") && location.pathname.split("/")[1]) || "newsroom";
+  const WORKFLOW = "update-news.yml";
+  const API = `https://api.github.com/repos/${host}/${repo}/actions`;
+  const KEY = "automata.ghToken";
+
+  const btn = document.getElementById("refresh-btn");
+  const msg = document.getElementById("refresh-msg");
+  const panel = document.getElementById("token-panel");
+  const input = document.getElementById("token-input");
+  document.getElementById("run-link").href = `https://github.com/${host}/${repo}/actions/workflows/${WORKFLOW}`;
+
+  const getToken = () => { try { return localStorage.getItem(KEY) || ""; } catch (e) { return ""; } };
+  const setToken = t => { try { t ? localStorage.setItem(KEY, t) : localStorage.removeItem(KEY); } catch (e) {} };
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const say = (text, err) => { msg.textContent = text; msg.classList.toggle("err", !!err); };
+  const busy = on => { btn.disabled = on; btn.setAttribute("aria-busy", String(on)); };
+
+  function showPanel(note) {
+    panel.hidden = false;
+    document.getElementById("token-forget").hidden = !getToken();
+    if (note) say(note, true);
+    input.focus();
+  }
+
+  async function gh(path, opts = {}) {
+    const res = await fetch(API + path, {
+      ...opts,
+      headers: { Accept: "application/vnd.github+json", Authorization: `Bearer ${getToken()}`, "X-GitHub-Api-Version": "2022-11-28", ...(opts.headers || {}) },
+    });
+    if (res.status === 401 || res.status === 403 || res.status === 404) {
+      const e = new Error("auth"); e.status = res.status; throw e;
+    }
+    if (!res.ok) throw new Error(`GitHub 응답 ${res.status}`);
+    return res.status === 204 ? null : res.json();
+  }
+
+  async function latestRun() {
+    const r = await gh(`/workflows/${WORKFLOW}/runs?per_page=1`);
+    return r.workflow_runs[0];
+  }
+
+  async function currentStamp() {
+    try {
+      const r = await fetch(`data/news.json?t=${Date.now()}`, { cache: "no-store" });
+      return (await r.json()).updated;
+    } catch (e) { return null; }
+  }
+
+  async function refresh() {
+    if (!getToken()) { showPanel(); return; }
+    panel.hidden = true;
+    busy(true);
+    try {
+      const before = await currentStamp();
+      let run = await latestRun();
+      if (!run || run.status === "completed") {
+        const startedAt = Date.now();
+        say("뉴스 수집을 시작합니다…");
+        await gh(`/workflows/${WORKFLOW}/dispatches`, { method: "POST", body: JSON.stringify({ ref: "main" }) });
+        for (let i = 0; i < 20; i++) {  // the new run takes a few seconds to appear
+          await sleep(3000);
+          run = await latestRun();
+          if (run && new Date(run.created_at).getTime() > startedAt - 60000 && run.status !== "completed") break;
+          if (run && run.status === "completed" && new Date(run.created_at).getTime() > startedAt - 60000) break;
+        }
+      } else {
+        say("이미 수집 중입니다. 끝나길 기다립니다…");
+      }
+      for (let i = 0; i < 80 && run && run.status !== "completed"; i++) {
+        say("뉴스 수집 중… (보통 1분 안팎)");
+        await sleep(5000);
+        run = await gh(`/runs/${run.id}`);
+      }
+      if (!run || run.status !== "completed") throw new Error("수집이 너무 오래 걸립니다. 잠시 뒤 다시 확인해 주세요.");
+      if (run.conclusion !== "success") {
+        say(`수집 실패 (${run.conclusion}). `, true);
+        const a = document.createElement("a");
+        a.href = run.html_url; a.target = "_blank"; a.rel = "noopener"; a.textContent = "실행 기록 보기";
+        msg.append(a);
+        return;
+      }
+      for (let i = 0; i < 36; i++) {  // GitHub Pages publishes the commit within a minute or two
+        say("새 기사를 게시하는 중…");
+        const now = await currentStamp();
+        if (now && now !== before) {
+          try { sessionStorage.setItem("automata.bust", String(Date.now())); } catch (e) {}
+          location.reload();
+          return;
+        }
+        await sleep(5000);
+      }
+      say("새로 바뀐 기사가 없습니다.");
+    } catch (e) {
+      if (e.message === "auth") {
+        setToken("");
+        showPanel(e.status === 404 || e.status === 403
+          ? "토큰에 newsroom 저장소의 Actions 쓰기 권한이 없습니다. 다시 만들어 주세요."
+          : "토큰이 만료됐거나 잘못됐습니다. 다시 입력해 주세요.");
+      } else {
+        say(e.message || "새로고침에 실패했습니다.", true);
+      }
+    } finally {
+      busy(false);
+    }
+  }
+
+  btn.addEventListener("click", refresh);
+  document.getElementById("token-save").addEventListener("click", () => {
+    const t = input.value.trim();
+    if (!/^(github_pat_|ghp_)/.test(t)) { say("github_pat_로 시작하는 토큰을 붙여넣어 주세요.", true); return; }
+    setToken(t);
+    input.value = "";
+    say("");
+    refresh();
+  });
+  input.addEventListener("keydown", e => { if (e.key === "Enter") document.getElementById("token-save").click(); });
+  document.getElementById("token-cancel").addEventListener("click", () => { panel.hidden = true; say(""); });
+  document.getElementById("token-forget").addEventListener("click", () => { setToken(""); panel.hidden = true; say("저장된 토큰을 지웠습니다."); });
 })();
 </script>
 </body>

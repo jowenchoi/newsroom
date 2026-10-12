@@ -9,7 +9,7 @@ Pipeline
   5. Write one Korean line per story; English headlines are translated.
 
 Steps 3-5 use an LLM editor: Claude when ANTHROPIC_API_KEY is set, otherwise
-OpenAI when OPENAI_API_KEY is set (model from OPENAI_MODEL), and rules plus
+OpenAI when OPENAI_API_KEY is set (OPENAI_MODEL, default gpt-6-luna), and rules plus
 Google Translate when neither key is present. Everything else is standard library only.
 """
 import email.utils
@@ -32,8 +32,13 @@ UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chr
 KST = timezone(timedelta(hours=9))
 MAX_AGE_DAYS = 14
 AI_LIMIT, RIVAL_LIMIT, DOOSAN_LIMIT = 16, 9, 10
-CLAUDE_MODEL = "claude-opus-5-5"
-OPENAI_MODEL = os.environ.get("OPENAI_MODEL") or "gpt-4o-mini"
+CLAUDE_MODEL = "claude-haiku-5-5"  # cheapest current Claude; enough for headline triage
+# GPT-6 Luna: OpenAI's lowest-cost current model with structured outputs. Ranking ~80
+# headlines into short Korean lines needs little reasoning, so effort stays low.
+OPENAI_MODELS = [os.environ["OPENAI_MODEL"]] if os.environ.get("OPENAI_MODEL") else [
+    "gpt-6-luna", "gpt-5.4-nano", "gpt-4o-mini",  # fall back if a model is retired or not enabled
+]
+OPENAI_REASONING_EFFORT = os.environ.get("OPENAI_REASONING_EFFORT") or "low"
 
 AI_QUERIES = [
     ("로봇 AI", "ko"),
@@ -470,12 +475,10 @@ def claude_select(items, limit, section):
 
     client = anthropic.Anthropic()
     prompt = editor_prompt(items, limit)
-    response = client.beta.messages.create(
+    response = client.messages.create(
         model=CLAUDE_MODEL,
         max_tokens=16000,
         output_config={"effort": "low", "format": {"type": "json_schema", "schema": EDITOR_SCHEMA}},
-        betas=["server-side-fallback-2026-07-01"],
-        fallbacks="default",
         messages=[{"role": "user", "content": prompt}],
     )
     if response.stop_reason == "refusal":
@@ -488,14 +491,27 @@ def openai_select(items, limit, section):
     from openai import OpenAI
 
     client = OpenAI()
-    response = client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=[{"role": "user", "content": editor_prompt(items, limit)}],
-        response_format={
-            "type": "json_schema",
-            "json_schema": {"name": "news_edit", "schema": EDITOR_SCHEMA, "strict": True},
-        },
-    )
+    prompt = editor_prompt(items, limit)
+    last_error = None
+    for model in OPENAI_MODELS:
+        extra = {"reasoning_effort": OPENAI_REASONING_EFFORT} if re.match(r"(gpt-[5-9]|o\d)", model) else {}
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                response_format={
+                    "type": "json_schema",
+                    "json_schema": {"name": "news_edit", "schema": EDITOR_SCHEMA, "strict": True},
+                },
+                **extra,
+            )
+            print(f"  OpenAI model: {model}", file=sys.stderr)
+            break
+        except Exception as exc:  # noqa: BLE001 - try the next model on any API error
+            print(f"  ! OpenAI {model} failed: {exc}", file=sys.stderr)
+            last_error = exc
+    else:
+        raise last_error
     message = response.choices[0].message
     if getattr(message, "refusal", None):
         raise RuntimeError(f"OpenAI declined the editing request: {message.refusal}")
@@ -524,7 +540,7 @@ def edit(items, limit, section, now):
     if os.environ.get("ANTHROPIC_API_KEY"):
         editor = ("Claude", claude_select)
     elif os.environ.get("OPENAI_API_KEY"):
-        editor = (f"OpenAI {OPENAI_MODEL}", openai_select)
+        editor = ("OpenAI", openai_select)
     else:
         editor = None
     if editor and items:
