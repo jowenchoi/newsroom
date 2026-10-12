@@ -388,10 +388,9 @@ footer p { margin: 0; max-width: 60ch; }
   <div class="panel" id="token-panel" hidden>
     <p><b>처음 한 번만 설정합니다.</b> 새로고침 버튼은 GitHub에서 뉴스 수집을 실행합니다. 실행 권한이 있는 GitHub 토큰이 필요합니다.</p>
     <ol>
-      <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub 토큰 만들기</a> (Fine-grained token)</li>
-      <li>Repository access: <b>Only select repositories → newsroom</b></li>
-      <li>Permissions → Repository → <b>Actions: Read and write</b> (나머지는 그대로)</li>
-      <li>만든 토큰(github_pat_…)을 아래에 붙여넣기</li>
+      <li><a id="token-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub 토큰 만들기</a> — 이름·기간·Actions 권한이 미리 채워진 화면이 열립니다</li>
+      <li>Repository access에서 <b>Only select repositories → newsroom</b> 선택</li>
+      <li>맨 아래 <b>Generate token</b> → 만든 토큰(github_pat_…)을 복사해 아래에 붙여넣기</li>
     </ol>
     <div class="row">
       <input type="password" id="token-input" placeholder="github_pat_..." autocomplete="off" spellcheck="false" aria-label="GitHub 토큰">
@@ -611,6 +610,14 @@ footer p { margin: 0; max-width: 60ch; }
   const panel = document.getElementById("token-panel");
   const input = document.getElementById("token-input");
   document.getElementById("run-link").href = `https://github.com/${host}/${repo}/actions/workflows/${WORKFLOW}`;
+  // GitHub template URL: prefills name, owner, a one-year expiry and Actions read/write.
+  document.getElementById("token-link").href = "https://github.com/settings/personal-access-tokens/new?" + new URLSearchParams({
+    name: "Automata refresh",
+    description: `${repo} 사이트의 새로고침 버튼이 뉴스 수집 워크플로를 실행할 때 사용`,
+    target_name: host,
+    expires_in: "366",
+    actions: "write",
+  });
 
   const getToken = () => { try { return localStorage.getItem(KEY) || ""; } catch (e) { return ""; } };
   const setToken = t => { try { t ? localStorage.setItem(KEY, t) : localStorage.removeItem(KEY); } catch (e) {} };
