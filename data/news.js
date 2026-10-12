@@ -1,5 +1,5 @@
 window.NEWS_DATA = {
- "updated": "2026-10-12T09:45",
+ "updated": "2026-10-12T09:47",
  "ai": [
   {
    "line": "[단독] SK스퀘어, 日 피지컬AI 기업 투자",
@@ -11,7 +11,7 @@ window.NEWS_DATA = {
    "lang": "ko"
   },
   {
-   "line": "앤로보틱스, 비블리오테카와 AI 도서관 로봇 '로미' 글로벌 독점 공급계약 체결 - 머니투데이",
+   "line": "앤로보틱스, 비블리오테카와 AI 도서관 로봇 '로미' 글로벌 독점 공급계약 체결",
    "url": "https://www.mt.co.kr/stock/2026/10/12/2026101209253860240",
    "source": "머니투데이",
    "date": "2026-10-12T09:29",
@@ -29,7 +29,7 @@ window.NEWS_DATA = {
    "lang": "ko"
   },
   {
-   "line": "로봇·AI로… 현대차 진화, 경계를 넘다 - 머니투데이",
+   "line": "로봇·AI로… 현대차 진화, 경계를 넘다",
    "url": "https://www.mt.co.kr/industry/2026/10/12/2026101119372011709",
    "source": "머니투데이",
    "date": "2026-10-12T03:00",
@@ -47,15 +47,6 @@ window.NEWS_DATA = {
    "lang": "ko"
   },
   {
-   "line": "“휴머노이드 로봇 D램… 2030년 20배로 급증”",
-   "url": "https://www.donga.com/news/amp/all/20261011/134821476/2",
-   "source": "동아일보",
-   "date": "2026-10-12T00:30",
-   "image": "https://dimg.donga.com/wps/NEWS/IMAGE/2026/10/11/134822723.1.jpg",
-   "tag": "HUMANOID",
-   "lang": "ko"
-  },
-  {
    "line": "리얼월드, 도쿄 도심서 피지컬 AI 로봇 실증한다",
    "url": "https://www.irobotnews.com/news/articleView.html?idxno=48922",
    "source": "로봇신문",
@@ -65,7 +56,7 @@ window.NEWS_DATA = {
    "lang": "ko"
   },
   {
-   "line": "휴머노이드 시대, 피지컬 AI만으로 충분한가? (8) 생략된 판단의 청구서 – 기술 부채와 운영 비용",
+   "line": "휴머노이드 시대, 피지컬 AI만으로 충분한가? (8) 생략된 판단의 청구서",
    "url": "https://www.irobotnews.com/news/articleView.html?idxno=48931",
    "source": "로봇신문",
    "date": "2026-10-11T22:59",
@@ -93,34 +84,23 @@ window.NEWS_DATA = {
    "original": "Will ‘boring’ robots win in the real world? Why robotic form should follow workflow"
   },
   {
-   "line": "ZEST: 운동 로봇 제어를 위한 제로샷 구현 기술 이전 - 과학",
-   "url": "https://www.science.org/doi/abs/10.1126/scirobotics.aec7695",
-   "source": "Science",
-   "date": "2026-10-11T17:58",
-   "image": "",
+   "line": "[AI&] 산불 진화 해법 찾기…국제 청소년 로봇 경진대회 外",
+   "url": "https://www.yna.co.kr/view/MYH20261012002600038",
+   "source": "연합뉴스",
+   "date": "2026-10-11T18:39",
+   "image": "https://www.bing.com/th?id=ONUT.IH3gK51BJQa5cLxN7E3L5w&pid=News&w=640&h=360&c=14",
    "tag": "ROBOTICS",
-   "lang": "en",
-   "original": "ZEST: Zero-shot embodied skill transfer for athletic robot control - Science"
+   "lang": "ko"
   },
   {
-   "line": "로봇 바리스타와 K팝 댄서가 대한민국 피지컬 AI 붐을 이끈다",
-   "url": "https://asia.nikkei.com/business/technology/artificial-intelligence/robot-baristas-and-k-pop-dancers-lead-south-korea-s-physical-ai-boom",
-   "source": "Nikkei Asia",
-   "date": "2026-10-11T10:43",
-   "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fcms-image-bucket-productionv3-ap-northeast-1-a7d2.s3.ap-northeast-1.amazonaws.com%2Fimages%2F0%2F7%2F2%2F2%2F13292270-1-eng-GB%2Fc014263b4ac8-photo_SXM2026100100012793.jpg?fit=cover&gravity=faces&dpr=2&quality=medium&source=nar-cms&format=jpg&width=1260&height=630",
-   "tag": "ROBOTICS",
+   "line": "계산대에 데려다주세요: 덴마크 식료품점에 오는 휴머노이드 로봇",
+   "url": "https://apnews.com/video/take-me-to-your-checkout-humanoid-robots-coming-to-danish-grocery-stores-2a57f0233c53404d8d23ad3957388195",
+   "source": "AP",
+   "date": "2026-10-11T12:03",
+   "image": "https://www.bing.com/th?id=ONUT.6n38Fb_MfAEDIZWSZomioA&pid=News&w=640&h=360&c=14",
+   "tag": "HUMANOID",
    "lang": "en",
-   "original": "Robot baristas and K-pop dancers lead South Korea's physical AI boom"
-  },
-  {
-   "line": "민첩성이 물리적 AI의 실제 병목 현상인 이유",
-   "url": "https://www.therobotreport.com/why-dexterity-is-physical-ai-real-bottleneck/",
-   "source": "The Robot Report",
-   "date": "2026-10-10T21:51",
-   "image": "https://www.therobotreport.com/wp-content/uploads/2026/10/tdk-featured.jpg",
-   "tag": "ROBOTICS",
-   "lang": "en",
-   "original": "Why dexterity is physical AI’s real bottleneck"
+   "original": "Take me to your checkout: Humanoid robots coming to Danish grocery stores"
   },
   {
    "line": "음식이 먼저 부서지지 않으면 이 로봇이 음식을 배달해 줄 것입니다",
@@ -133,24 +113,44 @@ window.NEWS_DATA = {
    "original": "This Robot Will Deliver Your Food, if It Doesn’t Get Smashed First"
   },
   {
-   "line": "현실 세계를 위한 '로봇 체육관' 훈련 기계 내부",
-   "url": "https://www.ft.com/content/e5fd2655-f95f-4183-9dd9-b3c1ebe67a6b?syn-25a6b1a6=1",
-   "source": "Financial Times",
-   "date": "2026-10-10T13:00",
-   "image": "",
-   "tag": "ROBOTICS",
+   "line": "Boston Dynamics는 재설계된 인간형 손에 대한 더 많은 통찰력을 제공합니다.",
+   "url": "https://www.therobotreport.com/boston-dynamics-gives-more-insight-into-its-redesigned-humanoid-hand/",
+   "source": "The Robot Report",
+   "date": "2026-10-10T02:20",
+   "image": "https://www.therobotreport.com/wp-content/uploads/2026/10/gr3-comparison-16x9-featured.jpg",
+   "tag": "HUMANOID",
    "lang": "en",
-   "original": "Inside the ‘robot gyms’ training machines for the real world"
+   "original": "Boston Dynamics gives more insight into its redesigned humanoid hand"
   },
   {
-   "line": "Groceryshop 2026은 소매 로봇이 AI를 사용하여 확장할 준비가 되어 있음을 보여줍니다.",
-   "url": "https://www.therobotreport.com/groceryshop-2026-shows-retail-robots-ready-scale-use-ai/",
-   "source": "The Robot Report",
-   "date": "2026-10-10T04:58",
-   "image": "https://www.therobotreport.com/wp-content/uploads/2026/10/GC_1.jpg",
+   "line": "볼핏 자유낙하로 로봇 해체!?! 게다가 Reachy 미니 랩도 있어요!",
+   "url": "https://spectrum.ieee.org/video-friday-reachy-mini-raps",
+   "source": "IEEE Spectrum",
+   "date": "2026-10-10T00:30",
+   "image": "https://spectrum.ieee.org/media-library/image.jpg?id=68398684&width=1200&height=600&coordinates=0%2C52%2C0%2C53",
    "tag": "ROBOTICS",
    "lang": "en",
-   "original": "Groceryshop 2026 shows that retail robots are ready to scale, use AI"
+   "original": "Robot Decommissioning By Ball-Pit Free Fall!?! Plus Reachy Mini Raps!"
+  },
+  {
+   "line": "Jabil이 휴머노이드 로봇 개발 및 생산 속도에 대해 논의합니다.",
+   "url": "https://www.therobotreport.com/jabil-discusses-pace-humanoid-robot-development-production/",
+   "source": "The Robot Report",
+   "date": "2026-10-09T01:28",
+   "image": "https://www.therobotreport.com/wp-content/uploads/2025/02/apptronik-kitting.jpg",
+   "tag": "HUMANOID",
+   "lang": "en",
+   "original": "Jabil discusses the pace of humanoid robot development and production"
+  },
+  {
+   "line": "AWS, 로봇 공학용 오픈 소스 물리적 AI 도구 체인 출시",
+   "url": "https://www.therobotreport.com/aws-launches-open-source-physical-ai-toolchain-for-robotics/",
+   "source": "The Robot Report",
+   "date": "2026-10-08T22:40",
+   "image": "https://www.therobotreport.com/wp-content/uploads/2025/10/amazon-vulcan-teasr.jpg",
+   "tag": "ROBOTICS",
+   "lang": "en",
+   "original": "AWS launches open-source Physical AI Toolchain for robotics"
   }
  ],
  "rivals": [
@@ -206,31 +206,11 @@ window.NEWS_DATA = {
    "company": "레인보우로보틱스"
   },
   {
-   "line": "레인보우로보틱스와 로봇 공동개발 나선 SFA",
-   "url": "https://www.hankyung.com/article/202609293032i",
-   "source": "한국경제",
-   "date": "2026-09-30T16:00",
-   "image": "https://static.hankyung.com/img/logo/logo-news-sns.png?v=20201130",
-   "tag": "레인보우로보틱스",
-   "lang": "ko",
-   "company": "레인보우로보틱스"
-  },
-  {
-   "line": "SFA-레인보우로보틱스, ‘로봇 기술 공동 개발’ 업무협약 체결 - 조선비즈",
+   "line": "SFA-레인보우로보틱스, ‘로봇 기술 공동 개발’ 업무협약 체결",
    "url": "https://biz.chosun.com/industry/company/2026/09/30/7S5O5GCDAJA2PCRV753RDMWQ3A/",
    "source": "조선일보",
    "date": "2026-09-30T16:00",
    "image": "https://biz.chosun.com/resizer/v2/RLDLO3W7PZAMJKCASHLIAJLZSU.jpg?auth=a9626403ef9823dee4ad7c8cbd9111ab9d0ac1632dd92be74e4cc5096ae8005f&width=1200&height=630&smart=true",
-   "tag": "레인보우로보틱스",
-   "lang": "ko",
-   "company": "레인보우로보틱스"
-  },
-  {
-   "line": "SFA-레인보우로보틱스, AI 자율제조 기술 협력 맞손",
-   "url": "https://zdnet.co.kr/view/?no=20260929183802",
-   "source": "지디넷코리아",
-   "date": "2026-09-30T16:00",
-   "image": "https://image.zdnet.co.kr/2026/09/29/6324c56cb57a1c3c8291aee97d33e697.jpg",
    "tag": "레인보우로보틱스",
    "lang": "ko",
    "company": "레인보우로보틱스"
@@ -245,6 +225,26 @@ window.NEWS_DATA = {
    "lang": "en",
    "original": "AI boom drives robot makers Fanuc, Yaskawa to step up shift from China to US",
    "company": "FANUC"
+  },
+  {
+   "line": "휴머노이드 로봇플랫폼 NAMI를 운용하는 안지훈 ETRI 석사후연구원(왼쪽)과 이준호 뉴로메카 박사.",
+   "url": "https://www.etnews.com/tools/image_popup.html?v=bjQ5VkNYY2dLZTZMZFBUbmNzandvWmpGcjBTK1pHYm1CUVRXR0pTMldlYVZkdE5JeGJVUFVVNURJN04rbmhKTVYzUXNOY2VNb3VUajRkZkx1Y0s5MytoSVR0MGtoRTZIUWZtYnZMMUZ5RXl4dWZzZkNzL2hhMENTaWZ6YVIzUmJyV3J0djRZTEpZOVBjb2JSbW1IOTJBQ2kvMkQvMFc5SkFzZ2E4bHpZZlZ6czJVcUhKUjFxM1M1WjhEVExEenljZm0rVklmTXZINW1DNVN3clBYT3ZuMnN0OFpxMHE3Q2hNZno0TG9hb1ErcVVjRVZEbWxFbmR5RmdkSjg1dU1JbUhPM0dOYVRzUm1NZmZXdDZ2YklFTnlGdTZobUsrSFZDV1pvazZYSjNLU3VkTTlRdW5Hb295QXYya1RKMkk4OExsalU2SVBSdEhQMXBRUDFHODhoVFBla2tmUWpPbWRIK3NjUzZ6d1dRV1NyQWdrTmVxaW5nUEVYY3MwRWhtY3BEVmF2VUI4ZnJWckNoNHErbU1BNDBjeGkzVE1IY3dsQy9ITml5UVVseHUxK0xwajhIOEgvam0vdlkrWHVVZHFiLzNSNkFSME0xWXlBN0g2QTZLdXUxa3g4N2tZN0lYaGRLaWFvU1ZhbWw3YlI4YnNvL1RGd291b21xOWZ0OThyM3Y",
+   "source": "전자신문",
+   "date": "2026-09-29T14:52",
+   "image": "",
+   "tag": "뉴로메카",
+   "lang": "ko",
+   "company": "뉴로메카"
+  },
+  {
+   "line": "뉴로메카, '인간-AI 협업형 LAM 개발' 주관 기관 선정",
+   "url": "https://www.newsis.com/view/NISX20260928_0003804614",
+   "source": "뉴시스",
+   "date": "2026-09-28T16:00",
+   "image": "https://img1.newsis.com/2026/09/28/NISI20260928_0002249244_web.jpg",
+   "tag": "뉴로메카",
+   "lang": "ko",
+   "company": "뉴로메카"
   }
  ],
  "doosan": [
@@ -299,16 +299,6 @@ window.NEWS_DATA = {
    "company": "두산에너빌리티"
   },
   {
-   "line": "두산에너빌리티, 美에 가스터빈 첫 출하",
-   "url": "https://www.segye.com/newsView/20261006519440",
-   "source": "세계일보",
-   "date": "2026-10-07T06:00",
-   "image": "https://www.segye.com/content/image/2026/10/06/20261006519808.jpg",
-   "tag": "두산에너빌리티",
-   "lang": "ko",
-   "company": "두산에너빌리티"
-  },
-  {
    "line": "두산에너빌리티, 미국 스페이스X AI에 국산 가스터빈 첫 납품",
    "url": "https://biz.chosun.com/en/en-industry/2026/10/06/ITMUPVGPKJD4PJPUVJKUB5W7GM/",
    "source": "조선일보",
@@ -320,26 +310,6 @@ window.NEWS_DATA = {
    "company": "두산에너빌리티"
   },
   {
-   "line": "[게시판] 두산로보틱스, 989억 규모 피지컬 AI 국책과제 2건 선정 등 단신",
-   "url": "https://www.aitimes.com/news/articleView.html?idxno=216013",
-   "source": "AI타임스",
-   "date": "2026-10-06T17:26",
-   "image": "https://cdn.aitimes.com/news/photo/202610/216013_220001_5947.jpg",
-   "tag": "두산로보틱스",
-   "lang": "ko",
-   "company": "두산로보틱스"
-  },
-  {
-   "line": "[게시판] 딥엑스-두산로보틱스, 원전 제조 ‘AI 용접 솔루션’ 공동개발 협력 등 단신",
-   "url": "https://www.aitimes.com/news/articleView.html?idxno=216017",
-   "source": "AI타임스",
-   "date": "2026-10-06T17:00",
-   "image": "https://cdn.aitimes.com/news/photo/202610/216017_220002_1948.jpeg",
-   "tag": "두산로보틱스",
-   "lang": "ko",
-   "company": "두산로보틱스"
-  },
-  {
    "line": "두산, W98.9b AI 로봇사업 주도",
    "url": "https://www.koreaherald.com/article/10894269",
    "source": "코리아헤럴드",
@@ -349,6 +319,36 @@ window.NEWS_DATA = {
    "lang": "en",
    "original": "Doosan to lead W98.9b AI robotics projects",
    "company": "두산"
+  },
+  {
+   "line": "두산로보틱스, ‘한국형 피지컬 AI’ 구현 시동",
+   "url": "https://magazine.hankyung.com/job-joy/article/202610065960d",
+   "source": "한국경제",
+   "date": "2026-10-06T15:52",
+   "image": "https://img.hankyung.com/photo/202610/AD.45955100.1.jpg",
+   "tag": "두산로보틱스",
+   "lang": "ko",
+   "company": "두산로보틱스"
+  },
+  {
+   "line": "딥엑스, 두산로보틱스와 AI 용접 로봇 솔루션 개발",
+   "url": "https://www.sedaily.com/article/20098540",
+   "source": "서울경제",
+   "date": "2026-10-06T14:55",
+   "image": "",
+   "tag": "두산로보틱스",
+   "lang": "ko",
+   "company": "두산로보틱스"
+  },
+  {
+   "line": "두산로보틱스, 피지컬 AI 협동로봇 플랫폼 만든다…국책과제 2건 선정",
+   "url": "https://www.etnews.com/20261006000208",
+   "source": "전자신문",
+   "date": "2026-10-06T13:24",
+   "image": "https://img.etnews.com/news/article/2026/10/06/news-p.v1.20261006.393650f82fa740e0962c30e119d98a1c_P1.jpg",
+   "tag": "두산로보틱스",
+   "lang": "ko",
+   "company": "두산로보틱스"
   }
  ]
 };
