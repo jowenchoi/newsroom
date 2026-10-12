@@ -30,8 +30,13 @@ OUT_JSON = ROOT / "data" / "news.json"
 OUT_JS = ROOT / "data" / "news.js"
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 KST = timezone(timedelta(hours=9))
-MAX_AGE_DAYS = 14
-AI_LIMIT, RIVAL_LIMIT, DOOSAN_LIMIT = 16, 9, 10
+# Per section: (fewest stories to show, most stories, how many days back to look).
+# Rival news is sparse, so that section looks further back.
+SECTIONS = {
+    "ai": (12, 18, 14),
+    "rivals": (8, 12, 30),
+    "doosan": (8, 12, 21),
+}
 CLAUDE_MODEL = "claude-haiku-5-5"  # cheapest current Claude; enough for headline triage
 # GPT-6 Luna: OpenAI's lowest-cost current model with structured outputs. Ranking ~80
 # headlines into short Korean lines needs little reasoning, so effort stays low.
@@ -40,13 +45,22 @@ OPENAI_MODELS = [os.environ["OPENAI_MODEL"]] if os.environ.get("OPENAI_MODEL") e
 ]
 OPENAI_REASONING_EFFORT = os.environ.get("OPENAI_REASONING_EFFORT") or "low"
 
+# The first section casts a wide net: robotics plus the wider AI industry.
 AI_QUERIES = [
     ("로봇 AI", "ko"),
     ("휴머노이드", "ko"),
     ("피지컬 AI", "ko"),
+    ("산업용 로봇", "ko"),
+    ("생성형 AI", "ko"),
+    ("AI 반도체", "ko"),
+    ("자율주행", "ko"),
+    ("AI 에이전트", "ko"),
     ("robotics AI", "en"),
     ("humanoid robot", "en"),
     ("physical AI robot", "en"),
+    ("artificial intelligence", "en"),
+    ("AI chips Nvidia", "en"),
+    ("autonomous driving robotaxi", "en"),
 ]
 
 # (query, language, company label)
@@ -62,17 +76,26 @@ DOOSAN_QUERIES = [
     ("두산그룹", "ko", "두산"),
 ]
 
-# Doosan Robotics competitors: (query, language, company label, words the headline must contain)
+# Doosan Robotics competitors: company label -> words a headline must contain to count.
+RIVALS = [
+    ("레인보우로보틱스", ["레인보우로보틱스", "rainbow robotics"]),
+    ("HD현대로보틱스", ["hd현대로보틱스", "hd hyundai robotics"]),
+    ("뉴로메카", ["뉴로메카", "neuromeka"]),
+    ("한화로보틱스", ["한화로보틱스", "hanwha robotics"]),
+    ("Universal Robots", ["universal robots", "유니버설로봇", "유니버설 로봇", "teradyne", "테라다인"]),
+    ("FANUC", ["fanuc", "화낙"]),
+    ("ABB", ["abb"]),
+    ("Yaskawa", ["yaskawa", "야스카와"]),
+    ("KUKA", ["kuka", "쿠카"]),
+    ("Techman", ["techman robot", "테크맨"]),
+    ("중국 협동로봇", ["jaka", "aubo", "elite robots", "dobot", "두봇", "아우보", "자카로보틱스"]),
+]
 RIVAL_QUERIES = [
-    ("레인보우로보틱스", "ko", "레인보우로보틱스", ["레인보우로보틱스", "rainbow robotics"]),
-    ("HD현대로보틱스", "ko", "HD현대로보틱스", ["hd현대로보틱스", "hd hyundai robotics"]),
-    ("뉴로메카", "ko", "뉴로메카", ["뉴로메카", "neuromeka"]),
-    ("Universal Robots cobot", "en", "Universal Robots", ["universal robots", "teradyne", "유니버설로봇"]),
-    ("FANUC robot", "en", "FANUC", ["fanuc", "화낙"]),
-    ("ABB Robotics", "en", "ABB", ["abb"]),
-    ("Yaskawa robot", "en", "Yaskawa", ["yaskawa", "야스카와"]),
-    ("KUKA robot", "en", "KUKA", ["kuka", "쿠카"]),
-    ("JAKA OR AUBO OR Elite Robots OR Dobot cobot", "en", "중국 협동로봇", ["jaka", "aubo", "elite robots", "dobot"]),
+    ("레인보우로보틱스", "ko"), ("HD현대로보틱스", "ko"), ("뉴로메카", "ko"), ("한화로보틱스", "ko"),
+    ("유니버설로봇", "ko"), ("화낙 로봇", "ko"), ("협동로봇", "ko"), ("산업용 로봇 수주", "ko"),
+    ("Universal Robots", "en"), ("Teradyne Robotics", "en"), ("FANUC robot", "en"), ("ABB Robotics", "en"),
+    ("Yaskawa robot", "en"), ("KUKA robot", "en"), ("Techman Robot", "en"),
+    ("JAKA OR AUBO OR Elite Robots OR Dobot cobot", "en"), ("collaborative robot cobot", "en"),
 ]
 
 # Established outlets only: domain -> display name.
@@ -129,6 +152,7 @@ DOOSAN_COMPANIES = [
 
 TAG_RULES = [
     ("HUMANOID", r"휴머노이드|humanoid|optimus|figure 0|atlas|digit"),
+    ("CHIP", r"반도체|칩|gpu|hbm|d램|dram|chip|semiconductor|nvidia|엔비디아|tpu"),
     ("FUNDING", r"투자 유치|유치|시리즈|인수|raises|funding|series [a-f]|valuation|acqui|ipo|상장"),
     ("MODEL", r"모델|파운데이션|foundation model|gr00t|vla|world model|open weights|오픈소스"),
     ("RESEARCH", r"연구|논문|research|study|university|대학|kaist"),
@@ -136,7 +160,8 @@ TAG_RULES = [
     ("POLICY", r"정부|규제|정책|법안|국감|fcc|regulat|policy|산업부|과기정통부"),
     ("AUTONOMY", r"자율주행|autonomous|self-driving|robotaxi|드론|drone"),
 ]
-TAGS = [t for t, _ in TAG_RULES] + ["ROBOTICS"]
+TAGS = [t for t, _ in TAG_RULES] + ["ROBOTICS", "AI"]
+ROBOT_RE = re.compile(r"로봇|robot|cobot|휴머노이드|humanoid", re.I)
 
 
 # ---------------------------------------------------------------- fetching
@@ -221,13 +246,13 @@ def parse_rss(raw, engine):
     return items
 
 
-def search(query, lang):
+def search(query, lang, days=14):
     q = urllib.parse.quote(query)
     mkt = "ko-KR" if lang == "ko" else "en-US"
     gl, ceid = ("KR", "KR:ko") if lang == "ko" else ("US", "US:en")
     feeds = [
         ("bing", f"https://www.bing.com/news/search?q={q}&format=rss&setlang={lang}&mkt={mkt}"),
-        ("google", f"https://news.google.com/rss/search?q={q}+when:{MAX_AGE_DAYS}d&hl={lang}&gl={gl}&ceid={ceid}"),
+        ("google", f"https://news.google.com/rss/search?q={q}+when:{days}d&hl={lang}&gl={gl}&ceid={ceid}"),
     ]
     out = []
     for engine, url in feeds:
@@ -370,7 +395,7 @@ def tag_for(title):
     for tag, pat in TAG_RULES:
         if re.search(pat, low):
             return tag
-    return "ROBOTICS"
+    return "ROBOTICS" if ROBOT_RE.search(title) else "AI"
 
 
 def rule_select(items, limit, lang_share=None):
@@ -413,15 +438,17 @@ def google_translate(text):
 # ---------------------------------------------------------------- Claude editing
 
 EDITOR_PROMPT = """너는 한국어 로보틱스·AI 뉴스 브리핑의 편집자다. 아래 후보 기사 목록(JSON)을 편집해라.
+섹션: {scope}
 
 규칙
 1. 같은 사건·발표를 다룬 기사는 하나만 남긴다. 언론사 신뢰도(통신사·주요 일간지·전문지 우선), 원문 직접 보도 여부, 최신성을 기준으로 고른다.
 2. 주가·시황·목표주가·증권사 리포트·수급 기사는 제외한다. 상장(IPO), 인수합병, 대형 수주 공시, 사업 재편처럼 회사의 방향을 바꾸는 사건만 예외로 남긴다.
-3. 보도자료 베끼기 수준의 홍보성 기사, 칼럼·광고성 콘텐츠, 주제와 무관한 기사는 제외한다.
-4. 남긴 기사마다 "line"을 쓴다: 무슨 일이 일어났는지 전하는 한국어 한 문장(60자 안팎). 영어 기사는 자연스러운 한국어로 번역해 쓴다. 기업명·제품명은 원어 표기 그대로 둬도 된다.
-5. "tag"는 다음 중 하나: {tags}. 후보에 company 값이 있으면 tag에 그 company 값을 그대로 쓴다.
-   company 값이 있는 기사는 그 회사가 기사의 주인공일 때만 남긴다.
-6. 중요도 순으로 정렬해 최대 {limit}개를 반환한다.
+3. 광고성 콘텐츠와 섹션 주제와 무관한 기사만 제외한다. 신제품·협력·수주·인사·전시·연구·정책·인터뷰·분석 기사는 남긴다.
+4. 후보가 충분하면 최소 {min_count}개 이상, 최대 {limit}개를 고른다. 1~3번 규칙에 걸리지 않는 기사는 너무 엄격하게 거르지 말고 남긴다.
+5. 남긴 기사마다 "line"을 쓴다: 무슨 일이 일어났는지 전하는 한국어 한 문장(60자 안팎). 영어 기사는 자연스러운 한국어로 번역해 쓴다. 기업명·제품명은 원어 표기 그대로 둬도 된다.
+6. "tag"는 다음 중 하나: {tags}. 후보에 company 값이 있으면 tag에 그 company 값을 그대로 쓴다.
+   company 값이 있는 기사는 그 회사가 기사에서 의미 있게 다뤄질 때 남긴다.
+7. 중요도 순으로 정렬해 반환한다.
 
 후보 기사:
 {items}"""
@@ -448,13 +475,23 @@ EDITOR_SCHEMA = {
 }
 
 
-def editor_prompt(items, limit):
+SCOPES = {
+    "ai": "로보틱스·AI 주요 뉴스. 로봇·휴머노이드·피지컬 AI뿐 아니라 AI 모델, AI 반도체, 자율주행, 빅테크의 AI 전략 등 AI 산업 전반을 넓게 다룬다.",
+    "rivals": "두산로보틱스 경쟁사 동향 (협동로봇·산업용 로봇 기업). 각 후보의 company가 그 경쟁사다.",
+    "doosan": "두산로보틱스와 두산그룹 계열사 소식. 각 후보의 company가 해당 계열사다.",
+}
+
+
+def editor_prompt(items, limit, section="ai"):
     payload = [
         {"id": i, "title": r["title"], "source": r["source"], "lang": r["lang"],
          "date": r["date"].strftime("%Y-%m-%d") if r["date"] else "", "company": r.get("company", "")}
         for i, r in enumerate(items)
     ]
-    return EDITOR_PROMPT.format(tags=", ".join(TAGS), limit=limit, items=json.dumps(payload, ensure_ascii=False))
+    return EDITOR_PROMPT.format(
+        scope=SCOPES[section], tags=", ".join(TAGS), limit=limit,
+        min_count=min(SECTIONS[section][0], len(items)), items=json.dumps(payload, ensure_ascii=False),
+    )
 
 
 def apply_edits(items, rows, limit, section):
@@ -474,7 +511,7 @@ def claude_select(items, limit, section):
     import anthropic
 
     client = anthropic.Anthropic()
-    prompt = editor_prompt(items, limit)
+    prompt = editor_prompt(items, limit, section)
     response = client.messages.create(
         model=CLAUDE_MODEL,
         max_tokens=16000,
@@ -491,7 +528,7 @@ def openai_select(items, limit, section):
     from openai import OpenAI
 
     client = OpenAI()
-    prompt = editor_prompt(items, limit)
+    prompt = editor_prompt(items, limit, section)
     last_error = None
     for model in OPENAI_MODELS:
         extra = {"reasoning_effort": OPENAI_REASONING_EFFORT} if re.match(r"(gpt-[5-9]|o\d)", model) else {}
@@ -520,9 +557,9 @@ def openai_select(items, limit, section):
 
 # ---------------------------------------------------------------- assemble
 
-def prepare(items, now):
+def prepare(items, now, days):
     """Newest first, inside the age window, exact-title duplicates removed."""
-    cutoff = now - timedelta(days=MAX_AGE_DAYS)
+    cutoff = now - timedelta(days=days)
     seen, out = set(), []
     for r in sorted(items, key=lambda r: r["date"] or cutoff, reverse=True):
         key = norm(r["title"])[:40]
@@ -531,11 +568,28 @@ def prepare(items, now):
         if key and key not in seen and (r["date"] is None or r["date"] >= cutoff):
             seen.add(key)
             out.append(r)
-    return out[:80]
+    return out[:120]
 
 
-def edit(items, limit, section, now):
-    items = prepare(items, now)
+def backfill(picked, items, min_count, limit):
+    """Top up an editor's short list with the next best rule-picked stories that aren't repeats."""
+    if len(picked) >= min_count:
+        return picked
+    out = list(picked)
+    for r in rule_select(items, len(items)):
+        if len(out) >= min_count or len(out) >= limit:
+            break
+        if any(r["url"] == o["url"] or similar(o["title"], r["title"]) or same_event(o, r) for o in out):
+            continue
+        r = dict(r)
+        r["line"] = google_translate(r["title"]) if r["lang"] == "en" else r["title"]
+        out.append(r)
+    return out
+
+
+def edit(items, section, now):
+    min_count, limit, days = SECTIONS[section]
+    items = prepare(items, now, days)
     picked = None
     if os.environ.get("ANTHROPIC_API_KEY"):
         editor = ("Claude", claude_select)
@@ -554,6 +608,11 @@ def edit(items, limit, section, now):
         picked = rule_select(items, limit, lang_share=0.6 if section == "ai" else None)
         for r in picked:
             r["line"] = google_translate(r["title"]) if r["lang"] == "en" else r["title"]
+    else:
+        before = len(picked)
+        picked = backfill(picked, items, min_count, limit)
+        if len(picked) > before:
+            print(f"  topped up {section} with {len(picked) - before} rule-picked stories", file=sys.stderr)
     with ThreadPoolExecutor(8) as pool:
         picked = list(pool.map(enrich, picked))
     out = []
@@ -575,19 +634,22 @@ def edit(items, limit, section, now):
 def main():
     now = datetime.now(timezone.utc)
     print("AI / robotics", file=sys.stderr)
-    ai = [r for q, lang in AI_QUERIES for r in search(q, lang)]
+    ai = [r for q, lang in AI_QUERIES for r in search(q, lang, SECTIONS["ai"][2])]
     print("Rivals", file=sys.stderr)
     rivals = []
-    for q, lang, company, words in RIVAL_QUERIES:
-        for r in search(q, lang):
+    for q, lang in RIVAL_QUERIES:
+        for r in search(q, lang, SECTIONS["rivals"][2]):
             low = r["title"].lower()
-            if any(mentions(low, w) for w in words) and "두산" not in r["title"] and "doosan" not in low:
+            if "두산" in r["title"] or "doosan" in low:
+                continue
+            company = next((name for name, words in RIVALS if any(mentions(low, w) for w in words)), None)
+            if company:
                 r["company"] = company
                 rivals.append(r)
     print("Doosan", file=sys.stderr)
     doosan = []
     for q, lang, _ in DOOSAN_QUERIES:
-        for r in search(q, lang):
+        for r in search(q, lang, SECTIONS["doosan"][2]):
             low = r["title"].lower()
             if "두산" in r["title"] or "doosan" in low:
                 r["company"] = next(
@@ -596,9 +658,9 @@ def main():
 
     data = {
         "updated": now.astimezone(KST).strftime("%Y-%m-%dT%H:%M"),
-        "ai": edit(ai, AI_LIMIT, "ai", now),
-        "rivals": edit(rivals, RIVAL_LIMIT, "rivals", now),
-        "doosan": edit(doosan, DOOSAN_LIMIT, "doosan", now),
+        "ai": edit(ai, "ai", now),
+        "rivals": edit(rivals, "rivals", now),
+        "doosan": edit(doosan, "doosan", now),
     }
     if not any(data[k] for k in ("ai", "rivals", "doosan")):
         print("No articles fetched; keeping previous data.", file=sys.stderr)

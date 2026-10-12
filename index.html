@@ -448,11 +448,11 @@ footer p { margin: 0; max-width: 60ch; }
 (function () {
   const data = window.NEWS_DATA || { updated: "", ai: [], doosan: [] };
   const COMPANY_ORDER = ["두산로보틱스", "두산에너빌리티", "두산밥캣", "두산퓨얼셀", "두산테스나", "두산"];
-  const PATTERN = { HUMANOID: "rings", FUNDING: "bars", RESEARCH: "grid", POLICY: "diag", FACTORY: "lines", MODEL: "dots", AUTONOMY: "diag", ROBOTICS: "grid" };
-  const RIVAL_ORDER = ["레인보우로보틱스", "HD현대로보틱스", "뉴로메카", "Universal Robots", "FANUC", "ABB", "Yaskawa", "KUKA", "중국 협동로봇"];
-  const RIVAL_PATTERN = { "레인보우로보틱스": "rings", "HD현대로보틱스": "bars", "뉴로메카": "dots", "Universal Robots": "grid", "FANUC": "lines", "ABB": "diag", "Yaskawa": "lines", "KUKA": "bars", "중국 협동로봇": "dots" };
+  const PATTERN = { HUMANOID: "rings", FUNDING: "bars", RESEARCH: "grid", POLICY: "diag", FACTORY: "lines", MODEL: "dots", AUTONOMY: "diag", ROBOTICS: "grid", CHIP: "bars", AI: "dots" };
+  const RIVAL_ORDER = ["레인보우로보틱스", "HD현대로보틱스", "뉴로메카", "한화로보틱스", "Universal Robots", "FANUC", "ABB", "Yaskawa", "KUKA", "Techman", "중국 협동로봇"];
+  const RIVAL_PATTERN = { "레인보우로보틱스": "rings", "HD현대로보틱스": "bars", "뉴로메카": "dots", "Universal Robots": "grid", "FANUC": "lines", "ABB": "diag", "Yaskawa": "lines", "KUKA": "bars", "한화로보틱스": "diag", "Techman": "rings", "중국 협동로봇": "dots" };
   const COMPANY_PATTERN = { "두산로보틱스": "rings", "두산에너빌리티": "bars", "두산밥캣": "lines", "두산퓨얼셀": "dots", "두산테스나": "grid", "두산": "diag" };
-  const TAG_KO = { HUMANOID: "휴머노이드", FUNDING: "투자", RESEARCH: "연구", POLICY: "정책", FACTORY: "산업 현장", MODEL: "AI 모델", AUTONOMY: "자율주행", ROBOTICS: "로보틱스" };
+  const TAG_KO = { HUMANOID: "휴머노이드", FUNDING: "투자", RESEARCH: "연구", POLICY: "정책", FACTORY: "산업 현장", MODEL: "AI 모델", AUTONOMY: "자율주행", ROBOTICS: "로보틱스", CHIP: "AI 반도체", AI: "AI" };
 
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
