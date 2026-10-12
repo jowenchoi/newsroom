@@ -106,7 +106,9 @@ STOCK_RE = re.compile(
     re.I,
 )
 # Off-topic stories that share a name with the companies (Doosan Bears baseball, family news ...).
-OFF_TOPIC_RE = re.compile(r"베어스|야구|KBO|투수|타자|홈런|이닝|유학|결혼|열애|별세|부고|골프|축구|배구|농구", re.I)
+OFF_TOPIC_RE = re.compile(
+    r"베어스|야구|KBO|투수|타자|홈런|이닝|유학|결혼|열애|별세|부고|골프|축구|배구|농구|"
+    r"\[게시판\]|\[인사\]|\[포토\]|\[사진\]|단신", re.I)
 MAJOR_EVENT_RE = re.compile(r"상장|IPO|인수|합병|M&A|분할|공개매수|acqui|merger|spin.?off", re.I)
 
 # Most specific first: a headline naming 두산로보틱스 belongs to it even when found via "두산그룹".
@@ -177,9 +179,11 @@ def real_link(link):
 
 def strip_source_suffix(title):
     """Drop a trailing outlet name such as " - 머니투데이" or " | Reuters"."""
-    m = re.match(r"^(.*\S)\s+[-|–—ㅣ]\s+([^-|–—ㅣ]{1,30})$", title)
-    if m and len(m.group(2).split()) <= 4:
-        return m.group(1)
+    for _ in range(2):  # Google sometimes leaves "... - 머니투데이 - 머니투데이"
+        m = re.match(r"^(.*\S)\s+[-|–—ㅣ]\s+([^-|–—ㅣ]{1,30})$", title)
+        if not (m and len(m.group(2).split()) <= 4):
+            break
+        title = m.group(1)
     return title
 
 
@@ -296,9 +300,32 @@ def bigrams(s):
     return {s[i:i + 2] for i in range(len(s) - 1)}
 
 
+# Names and topic words every headline in a section shares; they say nothing about which story it is.
+COMMON_WORDS = sorted(
+    {w for _, words in DOOSAN_COMPANIES for w in words}
+    | {"두산에너빌", "두산", "레인보우로보틱스", "hd현대로보틱스", "뉴로메카", "로보틱스", "로봇",
+       "휴머노이드", "피지컬", "협동로봇", "robotics", "robot", "humanoid"},
+    key=len, reverse=True,
+)
+ACRONYM_RE = re.compile(r"\b[A-Z][A-Z0-9]{2,}\b")
+COMMON_ACRONYMS = {"CEO", "CES", "USA", "AI", "IPO", "KAIST", "LLM", "GPU", "NEW", "THE"}
+
+
+def story_bigrams(title):
+    t = title.lower()
+    for w in COMMON_WORDS:
+        t = t.replace(w, " ")
+    return bigrams(norm(t))
+
+
 def similar(a, b):
-    A, B = bigrams(norm(a)), bigrams(norm(b))
-    return bool(A and B) and len(A & B) / len(A | B) >= 0.42
+    """Same story? Overlap of distinctive character pairs, or a shared rare acronym (e.g. SFA)."""
+    A, B = story_bigrams(a), story_bigrams(b)
+    if not (A and B):
+        return False
+    overlap = len(A & B) / min(len(A), len(B))
+    shared_acronym = (set(ACRONYM_RE.findall(a)) & set(ACRONYM_RE.findall(b))) - COMMON_ACRONYMS
+    return overlap >= 0.3 or (bool(shared_acronym) and overlap >= 0.15)
 
 
 def is_stock_noise(title):
