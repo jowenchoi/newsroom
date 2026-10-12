@@ -14,8 +14,9 @@
 - **주가 기사 제외**: 시황·목표주가·특징주 제외. 상장·인수합병·대형 수주만 예외
 - **영어 기사는 한국어로 번역**
 
-`ANTHROPIC_API_KEY` 시크릿이 있으면 Claude가 중복 판별·주가 기사 필터·한 줄 번역을 맡고,
-없으면 규칙 기반 필터 + Google 번역으로 동작합니다.
+중복 판별·주가 기사 필터·한 줄 번역은 LLM 편집자가 맡습니다.
+`ANTHROPIC_API_KEY` 시크릿이 있으면 Claude, 없고 `OPENAI_API_KEY`가 있으면 OpenAI
+(모델은 Actions 변수 `OPENAI_MODEL`, 기본 `gpt-4o-mini`), 둘 다 없으면 규칙 기반 필터 + Google 번역으로 동작합니다.
 
 ## 구성
 - `index.html` — 대시보드 (`data/news.js`를 읽어 렌더링)
@@ -25,7 +26,7 @@
 
 ## 처음 한 번 설정
 1. Settings → Pages → Build and deployment: **Deploy from a branch**, Branch **main** / **(root)** → Save
-2. (권장) Settings → Secrets and variables → Actions → `ANTHROPIC_API_KEY` 추가
+2. (권장) Settings → Secrets and variables → Actions → `ANTHROPIC_API_KEY` 또는 `OPENAI_API_KEY` 추가
 3. Actions → *Update news* → **Run workflow** 로 첫 수집 실행
 
 ## 휴대폰 홈 화면에 추가

@@ -8,8 +8,9 @@ Pipeline
   4. Collapse duplicates (the same story from several outlets).
   5. Write one Korean line per story; English headlines are translated.
 
-Steps 3-5 use Claude when ANTHROPIC_API_KEY is set, and fall back to rules
-plus Google Translate otherwise. Everything else is standard library only.
+Steps 3-5 use an LLM editor: Claude when ANTHROPIC_API_KEY is set, otherwise
+OpenAI when OPENAI_API_KEY is set (model from OPENAI_MODEL), and rules plus
+Google Translate when neither key is present. Everything else is standard library only.
 """
 import email.utils
 import html
@@ -32,6 +33,7 @@ KST = timezone(timedelta(hours=9))
 MAX_AGE_DAYS = 14
 AI_LIMIT, RIVAL_LIMIT, DOOSAN_LIMIT = 16, 9, 10
 CLAUDE_MODEL = "claude-opus-5-5"
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL") or "gpt-4o-mini"
 
 AI_QUERIES = [
     ("로봇 AI", "ko"),
@@ -441,19 +443,33 @@ EDITOR_SCHEMA = {
 }
 
 
-def claude_select(items, limit, section):
-    import anthropic
-
-    client = anthropic.Anthropic()
+def editor_prompt(items, limit):
     payload = [
         {"id": i, "title": r["title"], "source": r["source"], "lang": r["lang"],
          "date": r["date"].strftime("%Y-%m-%d") if r["date"] else "", "company": r.get("company", "")}
         for i, r in enumerate(items)
     ]
-    prompt = EDITOR_PROMPT.format(
-        tags=", ".join(TAGS), limit=limit,
-        items=json.dumps(payload, ensure_ascii=False),
-    )
+    return EDITOR_PROMPT.format(tags=", ".join(TAGS), limit=limit, items=json.dumps(payload, ensure_ascii=False))
+
+
+def apply_edits(items, rows, limit, section):
+    """Turn the editor's [{id, line, tag}] rows back into article records."""
+    picked = []
+    for row in rows[:limit]:
+        if 0 <= row["id"] < len(items):
+            r = dict(items[row["id"]])
+            r["line"] = row["line"].strip()
+            if section == "ai":
+                r["tag"] = row["tag"] if row["tag"] in TAGS else tag_for(r["title"])
+            picked.append(r)
+    return picked
+
+
+def claude_select(items, limit, section):
+    import anthropic
+
+    client = anthropic.Anthropic()
+    prompt = editor_prompt(items, limit)
     response = client.beta.messages.create(
         model=CLAUDE_MODEL,
         max_tokens=16000,
@@ -465,15 +481,25 @@ def claude_select(items, limit, section):
     if response.stop_reason == "refusal":
         raise RuntimeError("Claude declined the editing request")
     text = next(b.text for b in response.content if b.type == "text")
-    picked = []
-    for row in json.loads(text)["items"][:limit]:
-        if 0 <= row["id"] < len(items):
-            r = dict(items[row["id"]])
-            r["line"] = row["line"].strip()
-            if section == "ai":
-                r["tag"] = row["tag"] if row["tag"] in TAGS else tag_for(r["title"])
-            picked.append(r)
-    return picked
+    return apply_edits(items, json.loads(text)["items"], limit, section)
+
+
+def openai_select(items, limit, section):
+    from openai import OpenAI
+
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model=OPENAI_MODEL,
+        messages=[{"role": "user", "content": editor_prompt(items, limit)}],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {"name": "news_edit", "schema": EDITOR_SCHEMA, "strict": True},
+        },
+    )
+    message = response.choices[0].message
+    if getattr(message, "refusal", None):
+        raise RuntimeError(f"OpenAI declined the editing request: {message.refusal}")
+    return apply_edits(items, json.loads(message.content)["items"], limit, section)
 
 
 # ---------------------------------------------------------------- assemble
@@ -495,12 +521,19 @@ def prepare(items, now):
 def edit(items, limit, section, now):
     items = prepare(items, now)
     picked = None
-    if os.environ.get("ANTHROPIC_API_KEY") and items:
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        editor = ("Claude", claude_select)
+    elif os.environ.get("OPENAI_API_KEY"):
+        editor = (f"OpenAI {OPENAI_MODEL}", openai_select)
+    else:
+        editor = None
+    if editor and items:
+        name, select = editor
         try:
-            picked = claude_select(items, limit, section)
-            print(f"  Claude kept {len(picked)}/{len(items)} ({section})", file=sys.stderr)
+            picked = select(items, limit, section)
+            print(f"  {name} kept {len(picked)}/{len(items)} ({section})", file=sys.stderr)
         except Exception as exc:  # noqa: BLE001 - fall back to rules on any API failure
-            print(f"  ! Claude editing failed, using rules: {exc}", file=sys.stderr)
+            print(f"  ! {name} editing failed, using rules: {exc}", file=sys.stderr)
     if picked is None:
         picked = rule_select(items, limit, lang_share=0.6 if section == "ai" else None)
         for r in picked:

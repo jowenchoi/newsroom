@@ -22,12 +22,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Anthropic SDK (used only when the API key secret is set)
-        run: pip install anthropic
+      - name: Install LLM SDKs (used only when an API key secret is set)
+        run: pip install anthropic openai
 
       - name: Fetch news
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
         run: python scripts/fetch_news.py
 
       - name: Commit if changed
