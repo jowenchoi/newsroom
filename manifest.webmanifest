@@ -1,0 +1,16 @@
+{
+  "name": "Automata 로봇·AI 뉴스",
+  "short_name": "Automata",
+  "description": "로보틱스·AI 주요 뉴스, 경쟁사 동향, 두산로보틱스·두산 계열사 뉴스",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0e0d0c",
+  "theme_color": "#0e0d0c",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

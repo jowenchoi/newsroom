@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Automata 로봇·AI 뉴스</title>
+<meta name="description" content="로보틱스·AI 주요 뉴스, 경쟁사 동향, 두산로보틱스·두산 계열사 뉴스를 한국어 한 줄로">
+<meta name="theme-color" content="#0e0d0c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Automata">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,700;6..96,900&family=Noto+Serif+KR:wght@600;800&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap">
+<style>
+/* Layout: a magazine cover frame (red border) holding a masthead, one cover story,
+   a four-up story grid, a rivals section in amber, then a Doosan group section in the group's blue. */
+:root {
+  --ink: #0e0d0c;          /* page ground, warm black like printed ink */
+  --sheet: #171513;        /* raised surfaces: thumbnails, chips */
+  --rule: #34302b;         /* hairlines */
+  --paper: #f1ebe1;        /* primary text, newsprint white */
+  --muted: #a39b8f;        /* meta text */
+  --red: #e5112b;          /* cover-border red, the one loud colour */
+  --red-soft: #e5112b29;
+  --blue: #4f8df0;         /* Doosan section accent */
+  --blue-soft: #4f8df024;
+  --amber: #d9a441;        /* rivals section accent */
+  --amber-soft: #d9a44124;
+  --f-mast: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --f-head: "Noto Serif KR", "AppleMyungjo", "Nanum Myeongjo", serif;
+  --f-body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --f-label: "IBM Plex Sans Condensed", "Arial Narrow", "Noto Sans KR", sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--ink); }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font: 400 15px/1.6 var(--f-body);
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+.cover {
+  max-width: 1240px;
+  margin: 0 auto;
+  border: 10px solid var(--red);
+  padding: 20px clamp(16px, 3vw, 40px) 32px;
+}
+
+/* ---------- masthead ---------- */
+.mast {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 8px 24px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 10px;
+}
+.mast h1 {
+  margin: 0;
+  font: 900 clamp(64px, 13vw, 168px)/0.82 var(--f-mast);
+  letter-spacing: -0.02em;
+  color: var(--red);
+  text-transform: uppercase;
+}
+.mast h1 small {
+  display: block;
+  font: 600 clamp(11px, 1.1vw, 13px)/1.4 var(--f-label);
+  letter-spacing: 0.32em;
+  color: var(--paper);
+  margin: 0 0 10px 4px;
+}
+.issue {
+  text-align: right;
+  font: 500 12px/1.6 var(--f-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.issue b { display: block; color: var(--paper); font-size: 14px; letter-spacing: 0.06em; }
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 20px;
+  padding: 10px 0 0;
+  font: 600 12px/1.4 var(--f-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.bar nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.bar nav a:hover { color: var(--red); }
+.bar .note { color: var(--muted); letter-spacing: 0.08em; text-transform: none; font-family: var(--f-body); font-weight: 400; }
+
+/* ---------- thumbnails ---------- */
+.thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  overflow: hidden;
+  background: var(--sheet);
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.9) contrast(1.05); transition: transform .5s ease; }
+a.story:hover .thumb img { transform: scale(1.03); }
+.gen {
+  --tone: var(--red);
+  display: grid;
+  place-items: center;
+  background-color: var(--sheet);
+}
+.gen[data-sec="doosan"] { --tone: var(--blue); }
+.gen[data-sec="rivals"] { --tone: var(--amber); }
+.gen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .55;
+}
+.gen[data-pat="rings"]::before { background: repeating-radial-gradient(circle at 78% 30%, transparent 0 14px, color-mix(in srgb, var(--tone) 45%, transparent) 14px 15px); }
+.gen[data-pat="bars"]::before { background: repeating-linear-gradient(90deg, transparent 0 18px, color-mix(in srgb, var(--tone) 40%, transparent) 18px 20px); }
+.gen[data-pat="grid"]::before { background: linear-gradient(color-mix(in srgb, var(--tone) 35%, transparent) 1px, transparent 1px) 0 0/22px 22px, linear-gradient(90deg, color-mix(in srgb, var(--tone) 35%, transparent) 1px, transparent 1px) 0 0/22px 22px; }
+.gen[data-pat="diag"]::before { background: repeating-linear-gradient(-45deg, transparent 0 12px, color-mix(in srgb, var(--tone) 40%, transparent) 12px 13px); }
+.gen[data-pat="lines"]::before { background: repeating-linear-gradient(0deg, transparent 0 10px, color-mix(in srgb, var(--tone) 40%, transparent) 10px 11px); }
+.gen[data-pat="dots"]::before { background: radial-gradient(color-mix(in srgb, var(--tone) 60%, transparent) 1.5px, transparent 2px) 0 0/16px 16px; }
+.gen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 30%, var(--ink) 100%);
+}
+.gen .kw {
+  position: relative;
+  z-index: 1;
+  padding: 0 8%;
+  text-align: center;
+  font: 900 clamp(26px, 4.2vw, 46px)/1 var(--f-mast);
+  color: var(--paper);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  word-break: keep-all;
+}
+.gen .kw:lang(ko) { font-family: var(--f-head); font-weight: 800; }
+.lead .gen .kw { font-size: clamp(40px, 8vw, 104px); }
+.gen .src {
+  position: absolute;
+  z-index: 1;
+  left: 12px;
+  bottom: 10px;
+  font: 600 11px/1 var(--f-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tone);
+}
+
+/* ---------- story pieces ---------- */
+.story { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font: 600 11px/1.3 var(--f-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.kicker .tag { color: var(--red); }
+.sec-doosan .kicker .tag { color: var(--blue); }
+.sec-rivals .kicker .tag { color: var(--amber); }
+.kicker .tr {
+  border: 1px solid var(--rule);
+  padding: 2px 5px;
+  letter-spacing: 0.08em;
+  color: var(--paper);
+}
+.line {
+  margin: 0;
+  font: 700 17px/1.5 var(--f-head);
+  text-wrap: pretty;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+a.story:hover .line { text-decoration: underline; text-decoration-color: var(--red); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.sec-doosan a.story:hover .line { text-decoration-color: var(--blue); }
+.sec-rivals a.story:hover .line { text-decoration-color: var(--amber); }
+
+/* cover story */
+.lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding: 28px 0 32px;
+  border-bottom: 1px solid var(--rule);
+}
+.lead .thumb { aspect-ratio: 21 / 9; }
+.lead .line {
+  font-size: clamp(24px, 3.4vw, 40px);
+  line-height: 1.32;
+  font-weight: 800;
+  max-width: 28em;
+  text-wrap: balance;
+}
+.lead .kicker { font-size: 12px; }
+.lead .kicker .label { color: var(--paper); background: var(--red); padding: 3px 8px; letter-spacing: 0.22em; }
+
+/* section headers */
+.sec { padding-top: 36px; }
+.sec-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px 24px;
+  border-top: 4px solid var(--paper);
+  padding-top: 12px;
+  margin-bottom: 24px;
+}
+.sec-head h2 {
+  margin: 0;
+  font: 900 clamp(30px, 4.4vw, 52px)/1 var(--f-mast);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.sec-head h2 span { font: 800 clamp(16px, 1.8vw, 20px)/1 var(--f-head); margin-left: 12px; letter-spacing: 0; color: var(--muted); text-transform: none; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 32px 24px;
+}
+
+.grid-3 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+
+/* Rivals section */
+.sec-rivals .sec-head { border-top-color: var(--amber); }
+.sec-rivals .sec-head h2 { color: var(--amber); }
+.sec-rivals .chip[aria-pressed="true"] { background: var(--amber-soft); border-color: var(--amber); }
+
+/* Doosan section */
+.sec-doosan .sec-head { border-top-color: var(--blue); }
+.sec-doosan .sec-head h2 { color: var(--blue); }
+.d-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: end;
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--rule);
+}
+.d-lead .line { font-size: clamp(20px, 2.4vw, 28px); line-height: 1.4; font-weight: 800; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font: 600 12px/1 var(--f-label);
+  letter-spacing: 0.06em;
+  padding: 8px 12px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--f-body);
+}
+.chip:hover { color: var(--paper); border-color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--blue-soft); border-color: var(--blue); color: var(--paper); }
+.chip .n { color: var(--muted); margin-left: 4px; font-variant-numeric: tabular-nums; }
+.empty { color: var(--muted); padding: 24px 0; }
+
+footer {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 12px 32px;
+  font-size: 13px;
+  color: var(--muted);
+}
+footer b { color: var(--paper); font: 600 11px/1.6 var(--f-label); letter-spacing: 0.18em; text-transform: uppercase; display: block; }
+footer p { margin: 0; max-width: 60ch; }
+
+@media (max-width: 720px) {
+  body { padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left)); }
+  .cover { border-width: 6px; padding-top: 14px; }
+  .mast { grid-template-columns: minmax(0, 1fr); }
+  .mast h1 { font-size: 14vw; }
+  .mast h1 small { letter-spacing: 0.2em; }
+  .issue { text-align: left; }
+  .d-lead { grid-template-columns: 1fr; }
+  .lead .thumb { aspect-ratio: 16 / 9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .thumb img { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="cover">
+  <header class="mast">
+    <h1><small>Robotics &amp; Artificial Intelligence</small>Automata</h1>
+    <div class="issue" id="issue"><b>—</b></div>
+  </header>
+  <div class="bar">
+    <nav aria-label="섹션">
+      <a href="#robotics">로보틱스·AI</a>
+      <a href="#rivals">경쟁사</a>
+      <a href="#doosan">두산 그룹</a>
+    </nav>
+    <span class="note" id="updated"></span>
+  </div>
+
+  <main>
+    <article class="lead" id="lead"></article>
+
+    <section class="sec" id="robotics" aria-labelledby="robotics-h">
+      <div class="sec-head">
+        <h2 id="robotics-h">Top Stories<span>로보틱스·AI 주요 뉴스</span></h2>
+      </div>
+      <div class="grid" id="ai-grid"></div>
+    </section>
+
+    <section class="sec sec-rivals" id="rivals" aria-labelledby="rivals-h">
+      <div class="sec-head">
+        <h2 id="rivals-h">Rivals<span>두산로보틱스 경쟁사 동향</span></h2>
+        <div class="chips" id="r-chips" role="group" aria-label="경쟁사 필터"></div>
+      </div>
+      <div class="grid grid-3" id="r-grid"></div>
+    </section>
+
+    <section class="sec sec-doosan" id="doosan" aria-labelledby="doosan-h">
+      <div class="sec-head">
+        <h2 id="doosan-h">Doosan<span>두산로보틱스 &amp; 계열사</span></h2>
+        <div class="chips" id="chips" role="group" aria-label="계열사 필터"></div>
+      </div>
+      <div class="d-lead" id="d-lead"></div>
+      <div class="grid" id="d-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div><b>편집 원칙</b><p>연합뉴스·주요 일간지·경제지·IT 전문지와 Reuters, Bloomberg, TechCrunch, IEEE Spectrum 같은 공신력 있는 매체 기사만 싣습니다. 같은 사건을 다룬 기사는 하나로 합칩니다.</p></div>
+    <div><b>제외 기준</b><p>주가·시황·목표주가 기사는 싣지 않습니다. 상장, 인수합병, 대형 수주처럼 회사의 방향을 바꾸는 소식만 예외로 둡니다.</p></div>
+    <div><b>번역</b><p>영어 기사는 한국어 한 줄로 번역해 싣고 '번역' 표시를 붙입니다. 카드에 마우스를 올리면 원문 제목이 보입니다.</p></div>
+  </footer>
+</div>
+
+<script>document.write('<script src="data/news.js?v=' + Math.floor(Date.now() / 600000) + '"><\/script>')</script>
+<script>
+(function () {
+  const data = window.NEWS_DATA || { updated: "", ai: [], doosan: [] };
+  const COMPANY_ORDER = ["두산로보틱스", "두산에너빌리티", "두산밥캣", "두산퓨얼셀", "두산테스나", "두산"];
+  const PATTERN = { HUMANOID: "rings", FUNDING: "bars", RESEARCH: "grid", POLICY: "diag", FACTORY: "lines", MODEL: "dots", AUTONOMY: "diag", ROBOTICS: "grid" };
+  const RIVAL_ORDER = ["레인보우로보틱스", "HD현대로보틱스", "뉴로메카", "Universal Robots", "FANUC", "ABB", "Yaskawa", "KUKA", "중국 협동로봇"];
+  const RIVAL_PATTERN = { "레인보우로보틱스": "rings", "HD현대로보틱스": "bars", "뉴로메카": "dots", "Universal Robots": "grid", "FANUC": "lines", "ABB": "diag", "Yaskawa": "lines", "KUKA": "bars", "중국 협동로봇": "dots" };
+  const COMPANY_PATTERN = { "두산로보틱스": "rings", "두산에너빌리티": "bars", "두산밥캣": "lines", "두산퓨얼셀": "dots", "두산테스나": "grid", "두산": "diag" };
+  const TAG_KO = { HUMANOID: "휴머노이드", FUNDING: "투자", RESEARCH: "연구", POLICY: "정책", FACTORY: "산업 현장", MODEL: "AI 모델", AUTONOMY: "자율주행", ROBOTICS: "로보틱스" };
+
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  function fmtDate(d) {
+    if (!d) return "";
+    if (/^\d{4}$/.test(d)) return `${d}년`;
+    const m = d.match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/);
+    if (!m) return d;
+    return m[3] ? `${+m[2]}월 ${+m[3]}일` : `${m[1]}년 ${+m[2]}월`;
+  }
+
+  function isoWeek(date) {
+    const t = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const day = t.getUTCDay() || 7;
+    t.setUTCDate(t.getUTCDate() + 4 - day);
+    const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+    return Math.ceil(((t - y0) / 86400000 + 1) / 7);
+  }
+
+  function keyword(it) {
+    if (it.kw) return it.kw;
+    if (it.company) return it.company.replace("두산", "") || "두산";
+    return TAG_KO[it.tag] || "로보틱스";
+  }
+
+  function genThumb(it, sec) {
+    const pat = sec === "doosan" ? (COMPANY_PATTERN[it.company] || "diag")
+      : sec === "rivals" ? (RIVAL_PATTERN[it.company] || "grid")
+      : (PATTERN[it.tag] || "grid");
+    const kw = keyword(it);
+    const ko = /[가-힣]/.test(kw) ? ' lang="ko"' : "";
+    return `<div class="thumb gen" data-pat="${pat}" data-sec="${sec}" aria-hidden="true"><span class="kw"${ko}>${esc(kw)}</span><span class="src">${esc(it.source)}</span></div>`;
+  }
+
+  function thumb(it, sec) {
+    if (!it.image) return genThumb(it, sec);
+    return `<div class="thumb" data-fallback="${esc(JSON.stringify({ i: it, s: sec }))}"><img src="${esc(it.image)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>`;
+  }
+
+  function kicker(it, sec, extra) {
+    const label = sec === "ai" ? (TAG_KO[it.tag] || it.tag) : it.company;
+    const tr = it.lang === "en" ? `<span class="tr" title="원문 제목: ${esc(it.original)}">번역</span>` : "";
+    return `<div class="kicker">${extra || ""}<span class="tag">${esc(label)}</span><span>${esc(it.source)}</span><span>${fmtDate(it.date)}</span>${tr}</div>`;
+  }
+
+  function card(it, sec) {
+    const title = it.original ? ` title="원문: ${esc(it.original)}"` : "";
+    return `<a class="story" href="${esc(it.url)}" target="_blank" rel="noopener"${title}>
+      ${thumb(it, sec)}
+      ${kicker(it, sec)}
+      <p class="line">${esc(it.line)}</p>
+    </a>`;
+  }
+
+  // ----- masthead
+  const upd = data.updated ? new Date(data.updated + ":00+09:00") : new Date();
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
+  const kst = new Date(upd.getTime() + (9 * 60 + upd.getTimezoneOffset()) * 60000);
+  document.getElementById("issue").innerHTML =
+    `<b>${kst.getFullYear()}년 ${kst.getMonth() + 1}월 ${kst.getDate()}일 (${days[kst.getDay()]})</b>Vol. ${kst.getFullYear()} · No. ${isoWeek(kst)}`;
+  document.getElementById("updated").textContent = data.updated
+    ? `업데이트 ${kst.getMonth() + 1}/${kst.getDate()} ${String(kst.getHours()).padStart(2, "0")}:${String(kst.getMinutes()).padStart(2, "0")} KST`
+    : "";
+
+  // ----- cover story + grid
+  const ai = data.ai || [];
+  const lead = ai[0];
+  if (lead) {
+    const title = lead.original ? ` title="원문: ${esc(lead.original)}"` : "";
+    document.getElementById("lead").innerHTML = `<a class="story" href="${esc(lead.url)}" target="_blank" rel="noopener"${title}>
+      ${thumb(lead, "ai")}
+      ${kicker(lead, "ai", '<span class="label">Cover Story</span>')}
+      <p class="line">${esc(lead.line)}</p>
+    </a>`;
+  }
+  document.getElementById("ai-grid").innerHTML = ai.slice(1).map(it => card(it, "ai")).join("")
+    || '<p class="empty">아직 수집된 기사가 없습니다.</p>';
+
+  // ----- company filter chips (shared by the rivals and Doosan sections)
+  function companyFilter(chipsId, items, order, storageKey, render) {
+    const companies = order.filter(c => items.some(it => it.company === c));
+    let active = "전체";
+    try { const saved = localStorage.getItem(storageKey); if (saved && companies.includes(saved)) active = saved; } catch (e) {}
+    const box = document.getElementById(chipsId);
+    box.innerHTML = ["전체", ...companies].map(c => {
+      const n = c === "전체" ? items.length : items.filter(it => it.company === c).length;
+      return `<button type="button" class="chip" id="${chipsId}-${esc(c)}" data-c="${esc(c)}" aria-pressed="false">${esc(c)}<span class="n">${n}</span></button>`;
+    }).join("");
+    const apply = () => {
+      box.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.c === active)));
+      render(active === "전체" ? items : items.filter(it => it.company === active));
+      hookFallbacks();
+    };
+    box.addEventListener("click", e => {
+      const b = e.target.closest(".chip");
+      if (!b) return;
+      active = b.dataset.c;
+      try { localStorage.setItem(storageKey, active); } catch (err) {}
+      apply();
+    });
+    apply();
+  }
+
+  // ----- rivals section
+  const rivals = (data.rivals || []).slice().sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  companyFilter("r-chips", rivals, RIVAL_ORDER, "automata.rival", list => {
+    document.getElementById("r-grid").innerHTML = list.map(it => card(it, "rivals")).join("")
+      || '<p class="empty">경쟁사 관련 최근 기사가 없습니다.</p>';
+  });
+
+  // ----- Doosan section
+  const doosan = (data.doosan || []).slice().sort((a, b) => {
+    const ra = a.company === "두산로보틱스" ? 0 : 1, rb = b.company === "두산로보틱스" ? 0 : 1;
+    return ra - rb || String(b.date).localeCompare(String(a.date));
+  });
+  companyFilter("chips", doosan, COMPANY_ORDER, "automata.company", list => {
+    const [first, ...rest] = list;
+    document.getElementById("d-lead").innerHTML = first ? `<a class="story" href="${esc(first.url)}" target="_blank" rel="noopener"${first.original ? ` title="원문: ${esc(first.original)}"` : ""}>${thumb(first, "doosan")}</a>
+      <div class="story">${kicker(first, "doosan")}<a href="${esc(first.url)}" target="_blank" rel="noopener"><p class="line">${esc(first.line)}</p></a></div>` : "";
+    document.getElementById("d-lead").hidden = !first;
+    document.getElementById("d-grid").innerHTML = rest.map(it => card(it, "doosan")).join("")
+      || (first ? "" : '<p class="empty">이 계열사의 최근 기사가 없습니다.</p>');
+  });
+
+  // Swap any thumbnail that fails to load for a generated cover.
+  function hookFallbacks() {
+    document.querySelectorAll(".thumb[data-fallback] img").forEach(img => {
+      const swap = () => {
+        const box = img.parentElement;
+        if (!box || !box.dataset.fallback) return;
+        const { i, s } = JSON.parse(box.dataset.fallback);
+        box.outerHTML = genThumb(i, s);
+      };
+      if (img.complete && img.naturalWidth === 0) swap();
+      else img.addEventListener("error", swap, { once: true });
+    });
+  }
+
+  hookFallbacks();
+})();
+</script>
+</body>
+</html>
