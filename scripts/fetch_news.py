@@ -100,11 +100,23 @@ SOURCES = {
 STOCK_RE = re.compile(
     r"특징주|목표주가|목표가|주가|급등|급락|상한가|하한가|신고가|52주|종가|시총|시가총액|"
     r"투자의견|매수의견|증권가|리포트|순매수|순매도|공매도|테마주|관련주|수혜주|코스피|코스닥|"
+    r"종목|증시|주식|장마감|내일장|시세|상승률|하락률|고래|ETF|매수세|매도세|"
     r"\bshares? (?:rise|rose|fall|fell|jump|surge|slump|drop|climb|tumble)|stock (?:price|soar|fall|jump)|"
     r"price target|upgrade[sd]? to|downgrade",
     re.I,
 )
+# Off-topic stories that share a name with the companies (Doosan Bears baseball, family news ...).
+OFF_TOPIC_RE = re.compile(r"베어스|야구|KBO|투수|타자|홈런|이닝|유학|결혼|열애|별세|부고|골프|축구|배구|농구", re.I)
 MAJOR_EVENT_RE = re.compile(r"상장|IPO|인수|합병|M&A|분할|공개매수|acqui|merger|spin.?off", re.I)
+
+# Most specific first: a headline naming 두산로보틱스 belongs to it even when found via "두산그룹".
+DOOSAN_COMPANIES = [
+    ("두산로보틱스", ["두산로보틱스", "doosan robotics"]),
+    ("두산에너빌리티", ["두산에너빌리티", "두산에너빌", "doosan enerbility"]),
+    ("두산밥캣", ["두산밥캣", "밥캣", "bobcat"]),
+    ("두산퓨얼셀", ["두산퓨얼셀", "하이엑시엄", "doosan fuel cell", "hyaxiom"]),
+    ("두산테스나", ["두산테스나", "doosan tesna"]),
+]
 
 TAG_RULES = [
     ("HUMANOID", r"휴머노이드|humanoid|optimus|figure 0|atlas|digit"),
@@ -163,6 +175,14 @@ def real_link(link):
     return q.get("url", [link])[0]
 
 
+def strip_source_suffix(title):
+    """Drop a trailing outlet name such as " - 머니투데이" or " | Reuters"."""
+    m = re.match(r"^(.*\S)\s+[-|–—ㅣ]\s+([^-|–—ㅣ]{1,30})$", title)
+    if m and len(m.group(2).split()) <= 4:
+        return m.group(1)
+    return title
+
+
 def parse_rss(raw, engine):
     items = []
     for it in ET.fromstring(raw).iter():
@@ -182,9 +202,8 @@ def parse_rss(raw, engine):
             elif name == "image" and (ch.text or "").strip():  # Bing News
                 img = ch.text.strip().replace("http://", "https://", 1)
                 rec["image"] = img + ("&w=640&h=360&c=14" if "bing.com/th" in img else "")
-        if engine == "google":
-            rec["title"] = re.sub(r"\s+-\s+[^-]+$", "", rec["title"])  # strip " - Source"
-        else:
+        rec["title"] = strip_source_suffix(rec["title"])
+        if engine == "bing":
             rec["host"] = host_of(rec["url"])
         if rec["title"] and rec["url"]:
             items.append(rec)
@@ -221,8 +240,41 @@ OG_RE = re.compile(r'<meta[^>]+(?:property|name)=["\'](?:og:image|twitter:image)
 OG_RE_REV = re.compile(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:property|name)=["\'](?:og:image|twitter:image)', re.I)
 
 
-def og_image(item):
-    if item["image"]:
+def resolve_google(url):
+    """Turn a news.google.com/rss/articles/... link into the publisher's URL."""
+    if "news.google.com" not in url:
+        return url
+    try:
+        aid = urllib.parse.urlparse(url).path.rsplit("/", 1)[-1]
+        page = get(f"https://news.google.com/rss/articles/{aid}", timeout=8).decode("utf-8", "ignore")
+        sig = re.search(r'data-n-a-sg="([^"]+)"', page)
+        ts = re.search(r'data-n-a-ts="([^"]+)"', page)
+        if not (sig and ts):
+            return url
+        inner = json.dumps([
+            "garturlreq",
+            [["X", "X", ["X", "X"], None, None, 1, 1, "US:en", None, 1, None, None, None, None, None, 0, 1],
+             "X", "X", 1, [1, 1, 1], 1, 1, None, 0, 0, None, 0],
+            aid, int(ts.group(1)), sig.group(1),
+        ])
+        body = urllib.parse.urlencode({"f.req": json.dumps([[["Fbv4je", inner, None, "generic"]]])}).encode()
+        req = urllib.request.Request(
+            "https://news.google.com/_/DotsSplashUi/data/batchexecute", data=body,
+            headers={"User-Agent": UA, "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"},
+        )
+        with urllib.request.urlopen(req, timeout=8) as r:
+            text = r.read().decode("utf-8", "ignore")
+        payload = json.loads(text.split("\n\n", 1)[1])
+        real = json.loads(payload[0][2])[1]
+        return real if real.startswith("http") else url
+    except Exception:
+        return url
+
+
+def enrich(item):
+    """Resolve Google News redirects, then pick up the article's og:image if we lack one."""
+    item["url"] = resolve_google(item["url"])
+    if item["image"] or "news.google.com" in item["url"]:
         return item
     try:
         page = get(item["url"], timeout=8)[:400_000].decode("utf-8", "ignore")
@@ -268,19 +320,28 @@ def tag_for(title):
     return "ROBOTICS"
 
 
-def rule_select(items, limit):
-    """Drop stock chatter and near-duplicate headlines; prefer items with images."""
+def rule_select(items, limit, lang_share=None):
+    """Drop stock chatter and near-duplicate headlines; prefer items with images.
+
+    lang_share caps how much of the list one language may take (e.g. 0.6), so a
+    flood of Korean headlines still leaves room for international coverage.
+    """
+    langs = {r["lang"] for r in items}
+    cap = int(limit * lang_share) if lang_share and len(langs) > 1 else limit
     out = []
-    for r in items:
-        if is_stock_noise(r["title"]):
-            continue
-        dup = next((o for o in out if similar(o["title"], r["title"])), None)
-        if dup is None:
-            out.append(r)
-        elif r["image"] and not dup["image"]:
-            out[out.index(dup)] = r
-        if len(out) >= limit:
-            break
+    for capped in (True, False):  # second pass fills any room the cap left empty
+        for r in items:
+            if len(out) >= limit:
+                break
+            if r in out or is_stock_noise(r["title"]):
+                continue
+            if capped and sum(o["lang"] == r["lang"] for o in out) >= cap:
+                continue
+            dup = next((o for o in out if similar(o["title"], r["title"])), None)
+            if dup is None:
+                out.append(r)
+            elif r["image"] and not dup["image"]:
+                out[out.index(dup)] = r
     for r in out:
         r.setdefault("tag", tag_for(r["title"]))
     return out
@@ -377,6 +438,8 @@ def prepare(items, now):
     seen, out = set(), []
     for r in sorted(items, key=lambda r: r["date"] or cutoff, reverse=True):
         key = norm(r["title"])[:40]
+        if OFF_TOPIC_RE.search(r["title"]):
+            continue
         if key and key not in seen and (r["date"] is None or r["date"] >= cutoff):
             seen.add(key)
             out.append(r)
@@ -393,11 +456,11 @@ def edit(items, limit, section, now):
         except Exception as exc:  # noqa: BLE001 - fall back to rules on any API failure
             print(f"  ! Claude editing failed, using rules: {exc}", file=sys.stderr)
     if picked is None:
-        picked = rule_select(items, limit)
+        picked = rule_select(items, limit, lang_share=0.6 if section == "ai" else None)
         for r in picked:
             r["line"] = google_translate(r["title"]) if r["lang"] == "en" else r["title"]
     with ThreadPoolExecutor(8) as pool:
-        picked = list(pool.map(og_image, picked))
+        picked = list(pool.map(enrich, picked))
     out = []
     for r in picked:
         rec = {
@@ -428,10 +491,12 @@ def main():
                 rivals.append(r)
     print("Doosan", file=sys.stderr)
     doosan = []
-    for q, lang, company in DOOSAN_QUERIES:
+    for q, lang, _ in DOOSAN_QUERIES:
         for r in search(q, lang):
-            if "두산" in r["title"] or "doosan" in r["title"].lower():
-                r["company"] = company
+            low = r["title"].lower()
+            if "두산" in r["title"] or "doosan" in low:
+                r["company"] = next(
+                    (name for name, words in DOOSAN_COMPANIES if any(w in low for w in words)), "두산")
                 doosan.append(r)
 
     data = {
