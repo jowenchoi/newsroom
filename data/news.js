@@ -1,5 +1,5 @@
 window.NEWS_DATA = {
- "updated": "2026-10-12T09:42",
+ "updated": "2026-10-12T09:45",
  "ai": [
   {
    "line": "[단독] SK스퀘어, 日 피지컬AI 기업 투자",
@@ -15,15 +15,6 @@ window.NEWS_DATA = {
    "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9vNDlLaHdmdndlaFUtZlYzYXVzN0FzZjhQX0hhTmJpeE1XZkxyV0ZkZl9xS3prY3RReFNDc2w0bGEyMTZaX3lXWEZoek41NUhIY2ljSjlGN1ZGQ3M4VXpxQWgzbmtuNk5O0gFuQVVfeXFMUHR0RHA1alRzS2RIelRsWjZ3OGFWQTB6SnEtWEtXV0MwYlYwWTRIYy1WaW54cG8xanNmYlAtdWRubVVrbFU0cWpiSmVvU0RVbTlJTjZvWlU0LTJwUlROWkxRRUlvV2NBY0lpOVdXamc?oc=5",
    "source": "머니투데이",
    "date": "2026-10-12T09:29",
-   "image": "",
-   "tag": "ROBOTICS",
-   "lang": "ko"
-  },
-  {
-   "line": "\"AI와 함께 특별한 하루를\"…17일 서초 AI 페스타",
-   "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE85eHE4THVSNzktX0c3Uy1qYk1EbVNwMDhSVDlzc1ZLNm9tY2RPc0FHYWdqOHVaYXhNUjlPazdSOGRxbFh1a2tEd2EySnhudnVKSGc3LWhIMjFWdnQ3RkNtTNIBYEFVX3lxTE85eHE4THVSNzktX0c3Uy1qYk1EbVNwMDhSVDlzc1ZLNm9tY2RPc0FHYWdqOHVaYXhNUjlPazdSOGRxbFh1a2tEd2EySnhudnVKSGc3LWhIMjFWdnQ3RkNtTA?oc=5",
-   "source": "연합뉴스",
-   "date": "2026-10-12T07:25",
    "image": "",
    "tag": "ROBOTICS",
    "lang": "ko"
@@ -100,6 +91,15 @@ window.NEWS_DATA = {
    "tag": "ROBOTICS",
    "lang": "en",
    "original": "Will ‘boring’ robots win in the real world? Why robotic form should follow workflow"
+  },
+  {
+   "line": "a16z 투자팀 방한… 한국 반도체·로봇 기업 협력 모색",
+   "url": "https://www.sedaily.com/article/20100305",
+   "source": "서울경제",
+   "date": "2026-10-11T21:17",
+   "image": "https://www.bing.com/th?id=ONUT.FsGPSYgW-fp-svFI8L3NDQ&pid=News&w=640&h=360&c=14",
+   "tag": "ROBOTICS",
+   "lang": "ko"
   },
   {
    "line": "[AI&] 산불 진화 해법 찾기…국제 청소년 로봇 경진대회 外",
@@ -333,7 +333,7 @@ window.NEWS_DATA = {
    "company": "두산에너빌리티"
   },
   {
-   "line": "[포토] 두산에너지, SpaceXAI에 가스터빈 공급",
+   "line": "[포토] 두산에너빌리티, SpaceXAI에 가스터빈 공급",
    "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE90ejN3c0RUZjdkT1c2NHZ6SGpkZ0pSVG1hdVJybkJnZV93cWlTYWozb2FZTFRZTDI4RFprT1ZXWUtyNWpWRi1hTXVQYnM0Ylo1QVkw?oc=5",
    "source": "매일경제",
    "date": "2026-10-06T17:45",
