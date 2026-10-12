@@ -2,7 +2,7 @@ name: Update news
 
 on:
   schedule:
-    - cron: "17 */3 * * *"   # every 3 hours
+    - cron: "0 0,5 * * *"   # 09:00 and 14:00 KST (cron runs in UTC)
   workflow_dispatch:
 
 permissions:

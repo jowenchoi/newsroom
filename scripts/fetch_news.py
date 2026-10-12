@@ -108,7 +108,7 @@ STOCK_RE = re.compile(
 # Off-topic stories that share a name with the companies (Doosan Bears baseball, family news ...).
 OFF_TOPIC_RE = re.compile(
     r"베어스|야구|KBO|투수|타자|홈런|이닝|유학|결혼|열애|별세|부고|골프|축구|배구|농구|"
-    r"\[게시판\]|\[인사\]|\[포토\]|\[사진\]|단신", re.I)
+    r"\[게시판\]|\[인사\]|\[포토\]|\[사진\]|단신|\((?:왼쪽|오른쪽|가운데)\)|사진=", re.I)
 MAJOR_EVENT_RE = re.compile(r"상장|IPO|인수|합병|M&A|분할|공개매수|acqui|merger|spin.?off", re.I)
 
 # Most specific first: a headline naming 두산로보틱스 belongs to it even when found via "두산그룹".
@@ -318,6 +318,25 @@ def story_bigrams(title):
     return bigrams(norm(t))
 
 
+PARTICLE_RE = re.compile(r"(?:으로|에서|에게|와|과|의|에|를|을|은|는|이|가|로|도)$")
+
+
+def key_tokens(title):
+    """Distinctive words of a headline: company/topic words and particles removed, 3+ chars."""
+    t = title.lower()
+    for w in COMMON_WORDS:
+        t = t.replace(w, " ")
+    words = (PARTICLE_RE.sub("", w) for w in re.findall(r"[0-9a-z가-힣]+", t))
+    return {w for w in words if len(w) >= 3 and w not in {"ai", "로보틱스"}}
+
+
+def same_event(a, b):
+    """Same company, sharing a distinctive word such as 가스터빈 or SFA: treat as one story."""
+    if a.get("company") != b.get("company") or not a.get("company"):
+        return False
+    return bool(key_tokens(a["title"]) & key_tokens(b["title"]))
+
+
 def similar(a, b):
     """Same story? Overlap of distinctive character pairs, or a shared rare acronym (e.g. SFA)."""
     A, B = story_bigrams(a), story_bigrams(b)
@@ -364,7 +383,7 @@ def rule_select(items, limit, lang_share=None):
                 continue
             if capped and sum(o["lang"] == r["lang"] for o in out) >= cap:
                 continue
-            dup = next((o for o in out if similar(o["title"], r["title"])), None)
+            dup = next((o for o in out if similar(o["title"], r["title"]) or same_event(o, r)), None)
             if dup is None:
                 out.append(r)
             elif r["image"] and not dup["image"]:

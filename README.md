@@ -21,7 +21,7 @@
 - `index.html` — 대시보드 (`data/news.js`를 읽어 렌더링)
 - `manifest.webmanifest`, `icons/` — 휴대폰 홈 화면 바로가기(앱 아이콘)
 - `scripts/fetch_news.py` — 뉴스 수집·편집
-- `.github/workflows/update-news.yml` — 3시간마다 수집 후 `data/` 커밋 → GitHub Pages 자동 재배포
+- `.github/workflows/update-news.yml` — 매일 오전 9시·오후 2시(KST) 수집 후 `data/` 커밋 → GitHub Pages 자동 재배포
 
 ## 처음 한 번 설정
 1. Settings → Pages → Build and deployment: **Deploy from a branch**, Branch **main** / **(root)** → Save
