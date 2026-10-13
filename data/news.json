@@ -1,196 +1,187 @@
 {
- "updated": "2026-10-13T09:12",
+ "updated": "2026-10-14T08:50",
  "ai": [
   {
-   "line": "Microsoft가 자체 AI 칩 배치를 대폭 늘려 비용을 낮추고 Nvidia 의존도를 줄일 계획이다.",
-   "url": "https://www.reuters.com/business/microsoft-plans-huge-deployment-its-own-ai-chips-with-an-eye-saving-costs-2026-10-12/",
-   "source": "Reuters",
-   "date": "2026-10-13T05:22",
+   "line": "Uber 로보택시 사업 확장을 총괄한 임원이 다음 달 회사를 떠난다.",
+   "url": "https://www.bloomberg.com/news/articles/2026-10-13/uber-executive-overseeing-robotaxi-expansion-efforts-to-depart",
+   "source": "Bloomberg",
+   "date": "2026-10-13T21:15",
    "image": "",
-   "tag": "CHIP",
+   "tag": "AUTONOMY",
    "lang": "en",
-   "original": "Microsoft plans huge deployment of its own AI chips, with an eye on saving costs"
+   "original": "Uber Executive Overseeing Robotaxi Expansion to Depart"
   },
   {
-   "line": "과기정통부가 로봇과 산업 현장에 적용할 피지컬 AI의 미래 청사진을 제시했다.",
-   "url": "https://mobile.newsis.com/view_amp.html?ar_id=NISX20261012_0003821797",
-   "source": "뉴시스",
-   "date": "2026-10-12T12:00",
-   "image": "https://img1.newsis.com/2026/10/12/NISI20261012_0002260682_web.jpg",
-   "tag": "POLICY",
-   "lang": "ko"
-  },
-  {
-   "line": "교육부가 반도체·피지컬 AI 특성화 대학을 선정해 5년간 6000억원을 지원한다.",
-   "url": "https://www.etnews.com/20261012000114",
-   "source": "전자신문",
-   "date": "2026-10-12T12:00",
-   "image": "",
-   "tag": "POLICY",
-   "lang": "ko"
-  },
-  {
-   "line": "가온칩스가 Arm의 피지컬 AI 토탈 디자인 프로그램에 국내 기업 최초로 합류했다.",
-   "url": "https://zdnet.co.kr/view/?no=20261012165817",
-   "source": "지디넷코리아",
-   "date": "2026-10-12T17:03",
-   "image": "https://image.zdnet.co.kr/2026/10/12/929315dabf1a710a63fbdfc150206472.png",
-   "tag": "CHIP",
-   "lang": "ko"
-  },
-  {
-   "line": "AWS와 Nvidia가 로봇 개발을 돕는 피지컬 AI 툴체인을 공개했다.",
-   "url": "https://zdnet.co.kr/view/?no=20261012144235",
-   "source": "지디넷코리아",
-   "date": "2026-10-12T14:42",
-   "image": "https://image.zdnet.co.kr/2025/12/03/6f9a85d10f08d805d4d5cc514596c125.png",
-   "tag": "ROBOTICS",
-   "lang": "ko"
-  },
-  {
-   "line": "소진공이 소공인 제조현장에 피지컬 AI를 도입해 숙련기술 보존과 인력난 해소를 추진한다.",
-   "url": "https://www.etnews.com/20261012000356",
-   "source": "전자신문",
-   "date": "2026-10-12T18:52",
-   "image": "",
-   "tag": "FACTORY",
-   "lang": "ko"
-  },
-  {
-   "line": "전 보스턴다이내믹스 CEO가 피지컬 AI 로봇의 공장 투입이 임박했다고 전망했다.",
-   "url": "https://www.hankyung.com/article/2026101270391",
-   "source": "한국경제",
-   "date": "2026-10-12T17:50",
-   "image": "https://img.hankyung.com/photo/202610/AA.46027746.1.jpg",
-   "tag": "HUMANOID",
-   "lang": "ko"
-  },
-  {
-   "line": "K로봇이 문워크와 조선소 벽면 용접 등 새로운 작업 영역으로 진출하고 있다.",
-   "url": "https://www.joongang.co.kr/article/25469135",
-   "source": "중앙일보",
-   "date": "2026-10-13T02:01",
-   "image": "https://www.bing.com/th?id=ONUT.mm-smYZ4Ym7ENtyhTOrUqA&pid=News&w=640&h=360&c=14",
-   "tag": "ROBOTICS",
-   "lang": "ko"
-  },
-  {
-   "line": "경향신문이 유럽과 달리 국내에서 검증 없이 완전자율주행으로 안내되는 테슬라 FSD를 짚었다.",
-   "url": "https://www.khan.co.kr/article/202610122032045",
+   "line": "Microsoft가 자체 AI 반도체 Maia 300을 공개하며 Nvidia 의존도를 낮추려 한다.",
+   "url": "https://www.khan.co.kr/article/202610131523001/amp",
    "source": "경향신문",
-   "date": "2026-10-12T20:32",
-   "image": "https://img.khan.co.kr/spko/company/Khan_CI_180212.jpg",
-   "tag": "AUTONOMY",
+   "date": "2026-10-13T15:23",
+   "image": "https://img.khan.co.kr/news/2026/10/13/news-p.v1.20261013.a0a53bffece6492cbb8de42c1185dd51.jpg",
+   "tag": "CHIP",
    "lang": "ko"
   },
   {
-   "line": "GM CEO가 운전자가 전방을 계속 주시하지 않아도 되는 자율주행 기술 진전 상황을 밝혔다.",
-   "url": "https://www.cnbc.com/2026/10/12/cramer-gm-eyes-off-driving-2028.html",
-   "source": "CNBC",
-   "date": "2026-10-13T00:40",
-   "image": "https://image.cnbcfm.com/api/v1/image/108251652-1768310189707-gettyimages-2255455009-GM_BARRA.jpeg?v=1768310245&w=1920&h=1080",
+   "line": "중국 AI 반도체 시장에서 Nvidia 점유율이 하락하고 Huawei가 격차를 좁혔다.",
+   "url": "https://www.reuters.com/business/retail-consumer/nvidias-china-ai-chip-share-falls-huawei-closes-gap-report-finds-2026-10-13/",
+   "source": "Reuters",
+   "date": "2026-10-13T11:33",
+   "image": "",
+   "tag": "CHIP",
+   "lang": "en",
+   "original": "Nvidia's China AI-chip share falls as Huawei closes gap, report finds"
+  },
+  {
+   "line": "미 당국이 Tesla 로보택시의 스쿨존 과속 신고를 조사하고 있다.",
+   "url": "https://www.theverge.com/transportation/1010364/tesla-robotaxi-school-zonespeeding-investigation",
+   "source": "The Verge",
+   "date": "2026-10-14T02:40",
+   "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/09/gettyimages-2265246335.jpg?quality=90&strip=all&crop=0%2C15.095986038394%2C100%2C69.808027923211&w=1200",
    "tag": "AUTONOMY",
    "lang": "en",
-   "original": "GM CEO: We're making leaps and bounds toward 'eyes-off, hands-off' driving"
+   "original": "The feds are looking into reports of Tesla’s robotaxis speeding through school zones"
   },
   {
-   "line": "중국 휴머노이드 상위 10개 업체 중 8곳이 인증·상표·판매망을 확보하며 한국 진출을 준비한다.",
-   "url": "https://www.etnews.com/20261012000274",
-   "source": "전자신문",
-   "date": "2026-10-12T16:00",
-   "image": "",
-   "tag": "HUMANOID",
-   "lang": "ko"
-  },
-  {
-   "line": "중국 자동차업체 BYD가 휴머노이드 로봇을 공개했다.",
-   "url": "https://zdnet.co.kr/view/?no=20261012133446",
+   "line": "정부가 내년 피지컬 AI 예산을 9천억 원에서 3조1천억 원으로 늘릴 계획이다.",
+   "url": "https://zdnet.co.kr/view/?no=20261013140428",
    "source": "지디넷코리아",
-   "date": "2026-10-12T15:04",
-   "image": "https://image.zdnet.co.kr/2026/10/12/e01320355a79aef0e66728b3c0f6acbf.png",
+   "date": "2026-10-13T14:10",
+   "image": "https://image.zdnet.co.kr/2026/10/13/12afc54b281a2ea682d2096916b77302.jpg",
+   "tag": "POLICY",
+   "lang": "ko"
+  },
+  {
+   "line": "반도체·자동차 공정에 휴머노이드 20대를 투입하는 실증 특례가 승인됐다.",
+   "url": "https://www.yna.co.kr/view/AKR20261013140800003",
+   "source": "연합뉴스",
+   "date": "2026-10-13T17:55",
+   "image": "https://www.bing.com/th?id=ONUT.r3XnGmZKy8ZDlWN1cm1aDA&pid=News&w=640&h=360&c=14",
    "tag": "HUMANOID",
    "lang": "ko"
   },
   {
-   "line": "메카 AI가 800억원 규모 시리즈 B 투자를 유치해 로봇 학습 데이터 사업을 확대한다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48935",
-   "source": "로봇신문",
-   "date": "2026-10-12T11:44",
-   "image": "https://cdn.irobotnews.com/news/photo/202610/48935_104537_831.png",
-   "tag": "FUNDING",
-   "lang": "ko"
-  },
-  {
-   "line": "Kawasaki Heavy Industries가 피지컬 AI와 로보틱스에 5500억엔을 투자할 계획이다.",
-   "url": "https://www.digitimes.com/news/a20261012PD202/kawasaki-robotics-physical-ai-robot-industrial.html",
-   "source": "DIGITIMES",
-   "date": "2026-10-12T11:09",
-   "image": "https://img.digitimes.com/newsshow/20261012pd202_files/1_b.jpg",
-   "tag": "ROBOTICS",
-   "lang": "en",
-   "original": "Kawasaki Heavy Industries bets JPY550 billion on physical AI, robotics"
-  },
-  {
-   "line": "게코 로보틱스와 안두릴이 미국 조선소의 생산 혁신을 위해 협력한다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48936",
-   "source": "로봇신문",
-   "date": "2026-10-12T11:51",
-   "image": "https://cdn.irobotnews.com/news/photo/202610/48936_104538_1143.png",
-   "tag": "FACTORY",
-   "lang": "ko"
-  },
-  {
-   "line": "앤로보틱스가 비블리오테카와 AI 도서관 로봇 ‘로미’의 글로벌 독점 공급 계약을 맺었다.",
-   "url": "https://www.mt.co.kr/stock/2026/10/12/2026101209253860240",
-   "source": "머니투데이",
-   "date": "2026-10-12T09:29",
-   "image": "https://thumb.mt.co.kr/cdn-cgi/image/w=1200,h=1669,fit=cover,bg=white,f=auto,quality=high,sharpen=2,g=face/21/2026/10/2026101209253860240_1.jpg",
+   "line": "정부가 로봇개의 산책로 순찰 실증을 처음으로 승인했다.",
+   "url": "https://www.hankookilbo.com/news/article/A2026101313290004107",
+   "source": "한국일보",
+   "date": "2026-10-13T16:47",
+   "image": "https://newsimg.hankookilbo.com/2026/10/13/879538ba-5dd2-4563-b547-30e9b18ceb9c.jpeg",
    "tag": "ROBOTICS",
    "lang": "ko"
   },
   {
-   "line": "리얼월드가 도쿄 도심에서 피지컬 AI 로봇 실증을 진행한다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48922",
-   "source": "로봇신문",
-   "date": "2026-10-11T23:41",
-   "image": "https://cdn.irobotnews.com/news/photo/202610/48922_104510_208.png",
-   "tag": "ROBOTICS",
+   "line": "배경훈 부총리가 피지컬 AI 분야에서 세계 선도국 도약과 현장 성과를 강조했다.",
+   "url": "https://www.yna.co.kr/amp/view/AKR20261013053800017",
+   "source": "연합뉴스",
+   "date": "2026-10-13T15:00",
+   "image": "https://img8.yna.co.kr/photo/yna/YH/2026/10/13/PYH2026101316370001300_P4.jpg",
+   "tag": "POLICY",
    "lang": "ko"
   },
   {
-   "line": "연구진이 운동 능력을 갖춘 로봇의 제로샷 신체 기술 전이를 구현하는 ZEST를 발표했다.",
-   "url": "https://www.science.org/doi/abs/10.1126/scirobotics.aec7695",
-   "source": "Science",
-   "date": "2026-10-11T17:58",
+   "line": "KAIST와 16개 기업이 피지컬 AI 표준을 마련해 해외 시장 진출을 추진한다.",
+   "url": "https://it.chosun.com/news/articleViewAmp.html?idxno=2023092171947",
+   "source": "조선일보",
+   "date": "2026-10-13T19:15",
    "image": "",
+   "tag": "ROBOTICS",
+   "lang": "ko"
+  },
+  {
+   "line": "KAIST가 제조·의료·국방으로 확장하는 피지컬 AI 지능 체계를 제시했다.",
+   "url": "https://biz.chosun.com/science-chosun/science/2026/10/13/TPHPVCQL7BBHTDJABZKHJPREPA/",
+   "source": "조선일보",
+   "date": "2026-10-13T17:31",
+   "image": "https://www.bing.com/th?id=ONUT.TRuXwy4IE1TRqKyezv9uZg&pid=News&w=640&h=360&c=14",
    "tag": "RESEARCH",
+   "lang": "ko"
+  },
+  {
+   "line": "카카오가 카카오톡에 한국형 AI 에이전트를 도입해 음성으로 주문·예약을 지원한다.",
+   "url": "https://www.yna.co.kr/view/AKR20261013075951017",
+   "source": "연합뉴스",
+   "date": "2026-10-13T11:53",
+   "image": "https://img5.yna.co.kr/etc/inner/KR/2026/10/13/AKR20261013075951017_05_i_P4.jpg",
+   "tag": "AI",
+   "lang": "ko"
+  },
+  {
+   "line": "크래프톤이 내년 초 사회적 지능을 갖춘 로봇 AI 모델을 공개하겠다고 밝혔다.",
+   "url": "https://www.mt.co.kr/amp/tech/2026/10/13/2026101310413986136",
+   "source": "머니투데이",
+   "date": "2026-10-13T11:03",
+   "image": "https://thumb.mt.co.kr/cdn-cgi/image/f=avif/21/2026/10/2026101310413986136_1.jpg",
+   "tag": "MODEL",
+   "lang": "ko"
+  },
+  {
+   "line": "AMD가 AI 에이전트 전용 서버를 공개했다. CPU 코어 3만2천 개를 탑재했다.",
+   "url": "https://www.mk.co.kr/news/it/12174373",
+   "source": "매일경제",
+   "date": "2026-10-13T15:51",
+   "image": "https://www.bing.com/th?id=ONUT.360ipVwEkRlFr05TBSarNw&pid=News&w=640&h=360&c=14",
+   "tag": "CHIP",
+   "lang": "ko"
+  },
+  {
+   "line": "Promise Robotics가 D.R. Horton과 주택 건설용 피지컬 AI 개발에 협력한다.",
+   "url": "https://www.therobotreport.com/promise-robotics-partners-d-r-horton-physical-ai-homebuilding/",
+   "source": "The Robot Report",
+   "date": "2026-10-13T22:12",
+   "image": "https://www.therobotreport.com/wp-content/uploads/2026/10/Promise-Robotics_02.jpg",
+   "tag": "FACTORY",
    "lang": "en",
-   "original": "ZEST: Zero-shot embodied skill transfer for athletic robot control"
+   "original": "Promise Robotics partners with D.R. Horton on physical AI for homebuilding"
+  },
+  {
+   "line": "Industrial Next가 공장 로봇의 작업 전환 시간을 수주에서 수분으로 줄이는 기술을 개발한다.",
+   "url": "https://techcrunch.com/2026/10/13/industrial-next-wants-factory-robots-to-switch-tasks-in-minutes-not-weeks/",
+   "source": "TechCrunch",
+   "date": "2026-10-14T01:00",
+   "image": "https://www.bing.com/th?id=ONUT.jocRZ7pzR3Z6cCQIrG2tdw&pid=News&w=640&h=360&c=14",
+   "tag": "FACTORY",
+   "lang": "en",
+   "original": "Industrial Next wants factory robots to switch tasks in minutes, not weeks"
+  },
+  {
+   "line": "HD현대가 자체 개발한 양팔 로봇을 공개하고 휴머노이드 시장 진출에 속도를 낸다.",
+   "url": "https://www.fnnews.com/news/202610131922401424",
+   "source": "파이낸셜뉴스",
+   "date": "2026-10-13T21:23",
+   "image": "https://www.bing.com/th?id=ONUT.Q9OzwxVAwtnwt9zYc-8jLQ&pid=News&w=640&h=360&c=14",
+   "tag": "HUMANOID",
+   "lang": "ko"
+  },
+  {
+   "line": "GIST가 KETI·미국 라보로AI와 인간 중심 피지컬 AI 개발에 나선다.",
+   "url": "https://www.fnnews.com/news/202610140828464085",
+   "source": "파이낸셜뉴스",
+   "date": "2026-10-13T20:28",
+   "image": "https://www.bing.com/th?id=ONUT.BDx9sC1ZvOYifpi9F0UJmQ&pid=News&w=640&h=360&c=14",
+   "tag": "RESEARCH",
+   "lang": "ko"
+  },
+  {
+   "line": "AI 반도체 데이터 전송 효율을 50%에서 95%로 높이는 기술이 소개됐다.",
+   "url": "https://www.mt.co.kr/tech/2026/10/14/2026101306521322871",
+   "source": "머니투데이",
+   "date": "2026-10-14T05:30",
+   "image": "https://thumb.mt.co.kr/cdn-cgi/image/f=avif/21/2026/10/2026101306521322871_1.jpg",
+   "tag": "CHIP",
+   "lang": "ko"
   }
  ],
  "rivals": [
   {
-   "line": "Teradyne이 Bright Machines에 전략적 투자해 AI 인프라 제조 분야 로봇 도입을 추진한다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48929",
-   "source": "로봇신문",
-   "date": "2026-10-12T01:45",
-   "image": "https://www.bing.com/th?id=ONUT.m9XlkJPRxTU2hee-RyTimw&pid=News&w=640&h=360&c=14",
-   "tag": "Universal Robots",
+   "line": "레인보우로보틱스가 미국 로봇 규제에 대응해 국내 최초로 FCC 조건부 승인을 신청했다.",
+   "url": "https://www.sedaily.com/article/20100948",
+   "source": "서울경제",
+   "date": "2026-10-13T13:51",
+   "image": "https://wimg.sedaily.com/news/cms/2026/10/13/news-p.v1.20260801.af44bef9f9d34811b0b494f16f29eb17_Z1.jpeg",
+   "tag": "레인보우로보틱스",
    "lang": "ko",
-   "company": "Universal Robots"
+   "company": "레인보우로보틱스"
   },
   {
-   "line": "Teradyne Robotics와 Elite Robots가 협동로봇 소프트웨어 관련 분쟁을 합의로 마무리했다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48934",
-   "source": "로봇신문",
-   "date": "2026-10-12T18:03",
-   "image": "https://www.bing.com/th?id=ONUT.4ousjjzIp_6Bh_PnKZqOcA&pid=News&w=640&h=360&c=14",
-   "tag": "Universal Robots",
-   "lang": "ko",
-   "company": "Universal Robots"
-  },
-  {
-   "line": "뉴로메카가 국가 피지컬 AI 프로젝트를 주관해 조선업 완전 자율용접 기술 개발을 이끈다.",
+   "line": "뉴로메카가 국가 피지컬 AI 프로젝트를 주관해 조선 완전 자율용접 기술 개발을 이끈다.",
    "url": "https://www.irobotnews.com/news/articleView.html?idxno=48714",
    "source": "로봇신문",
    "date": "2026-09-28T16:00",
@@ -200,17 +191,7 @@
    "company": "뉴로메카"
   },
   {
-   "line": "뉴로메카가 디아이씨와 약 20억원 규모의 자동차 부품 자동화 설비 공급 계약을 맺었다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48781",
-   "source": "로봇신문",
-   "date": "2026-10-01T11:53",
-   "image": "https://cdn.irobotnews.com/news/photo/202610/48781_104315_470.jpg",
-   "tag": "뉴로메카",
-   "lang": "ko",
-   "company": "뉴로메카"
-  },
-  {
-   "line": "SFA와 레인보우로보틱스가 로봇 공동개발에 나서고 2030년 완전 무인화 사업화를 추진한다.",
+   "line": "SFA가 레인보우로보틱스와 손잡고 2030년 완전 무인화 목표를 위한 로봇 사업화에 속도를 낸다.",
    "url": "https://marketin.edaily.co.kr/News/ReadE?newsId=02079526645608656",
    "source": "이데일리",
    "date": "2026-10-01T06:00",
@@ -220,57 +201,7 @@
    "company": "레인보우로보틱스"
   },
   {
-   "line": "FANUC과 Google이 AI 용접 에이전트를 공동 개발해 12월 출시할 계획이다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48436",
-   "source": "로봇신문",
-   "date": "2026-09-13T16:00",
-   "image": "https://cdn.irobotnews.com/news/photo/202609/48436_103748_2133.png",
-   "tag": "FANUC",
-   "lang": "ko",
-   "company": "FANUC"
-  },
-  {
-   "line": "Universal Robots가 산업 자동화와 피지컬 AI를 겨냥한 차세대 협동로봇 플랫폼 Gen 7을 공개했다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48500",
-   "source": "로봇신문",
-   "date": "2026-09-15T16:00",
-   "image": "https://cdn.irobotnews.com/news/photo/202609/48500_103856_2731.png",
-   "tag": "Universal Robots",
-   "lang": "ko",
-   "company": "Universal Robots"
-  },
-  {
-   "line": "뉴로메카와 KAIST가 손목 카메라 없이 정밀 조작이 가능한 휴머노이드 AI 기술을 개발했다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48800",
-   "source": "로봇신문",
-   "date": "2026-10-02T16:00",
-   "image": "https://cdn.irobotnews.com/news/photo/202610/48800_104335_470.jpg",
-   "tag": "뉴로메카",
-   "lang": "ko",
-   "company": "뉴로메카"
-  },
-  {
-   "line": "아크릴과 레인보우로보틱스 등이 650억원 규모의 피지컬 AI 국책과제를 수행한다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48635",
-   "source": "로봇신문",
-   "date": "2026-09-22T16:00",
-   "image": "https://cdn.irobotnews.com/news/photo/202609/48635_104069_5550.jpg",
-   "tag": "레인보우로보틱스",
-   "lang": "ko",
-   "company": "레인보우로보틱스"
-  },
-  {
-   "line": "Hitachi와 FANUC이 피지컬 AI 실증과 사업화를 공동 추진한다.",
-   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48780",
-   "source": "로봇신문",
-   "date": "2026-10-05T20:57",
-   "image": "https://www.bing.com/th?id=ONUT.XX0ApbdqmKOmmI0cDR262g&pid=News&w=640&h=360&c=14",
-   "tag": "FANUC",
-   "lang": "ko",
-   "company": "FANUC"
-  },
-  {
-   "line": "HD현대로보틱스가 FABTECH 2026에서 용접·조선 자동화 솔루션을 선보였다.",
+   "line": "HD현대로보틱스가 FABTECH 2026에서 용접·조선 자동화 솔루션을 공개했다.",
    "url": "https://www.irobotnews.com/news/articleView.html?idxno=48861",
    "source": "로봇신문",
    "date": "2026-10-06T17:20",
@@ -280,7 +211,37 @@
    "company": "HD현대로보틱스"
   },
   {
-   "line": "AI 수요 확대에 맞춰 FANUC과 Yaskawa가 중국에서 미국으로 생산 거점을 옮기는 흐름을 보인다.",
+   "line": "아크릴과 레인보우로보틱스 등이 650억원 규모 피지컬 AI 국책과제를 진행한다.",
+   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48635",
+   "source": "로봇신문",
+   "date": "2026-09-22T16:00",
+   "image": "https://cdn.irobotnews.com/news/photo/202609/48635_104069_5550.jpg",
+   "tag": "레인보우로보틱스",
+   "lang": "ko",
+   "company": "레인보우로보틱스"
+  },
+  {
+   "line": "뉴로메카가 디아이씨와 약 20억원 규모의 자동차 부품 자동화 설비 공급 계약을 맺었다.",
+   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48781",
+   "source": "로봇신문",
+   "date": "2026-10-01T16:00",
+   "image": "https://cdn.irobotnews.com/news/photo/202610/48781_104315_470.jpg",
+   "tag": "뉴로메카",
+   "lang": "ko",
+   "company": "뉴로메카"
+  },
+  {
+   "line": "히타치와 FANUC이 피지컬 AI 공동 실증과 사업화에 나선다.",
+   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48780",
+   "source": "로봇신문",
+   "date": "2026-10-05T20:57",
+   "image": "https://www.bing.com/th?id=ONUT.XX0ApbdqmKOmmI0cDR262g&pid=News&w=640&h=360&c=14",
+   "tag": "FANUC",
+   "lang": "ko",
+   "company": "FANUC"
+  },
+  {
+   "line": "AI 붐에 대응해 FANUC과 야스카와가 중국에서 미국으로 생산 거점을 옮기는 움직임을 강화한다.",
    "url": "https://asia.nikkei.com/business/business-trends/ai-boom-drives-robot-makers-fanuc-yaskawa-to-step-up-shift-from-china-to-us2",
    "source": "Nikkei Asia",
    "date": "2026-09-30T16:00",
@@ -289,51 +250,111 @@
    "lang": "en",
    "original": "AI boom drives robot makers Fanuc, Yaskawa to step up shift from China to US",
    "company": "FANUC"
+  },
+  {
+   "line": "뉴로메카와 KAIST가 손목 카메라 없이 정밀 조작하는 휴머노이드 AI 기술을 개발했다.",
+   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48800",
+   "source": "로봇신문",
+   "date": "2026-10-02T16:00",
+   "image": "https://cdn.irobotnews.com/news/photo/202610/48800_104335_470.jpg",
+   "tag": "뉴로메카",
+   "lang": "ko",
+   "company": "뉴로메카"
+  },
+  {
+   "line": "유니버설로봇이 산업 자동화와 피지컬 AI를 겨냥한 협동로봇 플랫폼 Gen 7을 공개했다.",
+   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48500",
+   "source": "로봇신문",
+   "date": "2026-09-15T16:00",
+   "image": "https://cdn.irobotnews.com/news/photo/202609/48500_103856_2731.png",
+   "tag": "Universal Robots",
+   "lang": "ko",
+   "company": "Universal Robots"
+  },
+  {
+   "line": "테라다인 로보틱스와 엘리트 로봇이 협동로봇 소프트웨어 분쟁을 합의로 마무리했다.",
+   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48934",
+   "source": "로봇신문",
+   "date": "2026-10-12T18:03",
+   "image": "https://www.bing.com/th?id=ONUT.4ousjjzIp_6Bh_PnKZqOcA&pid=News&w=640&h=360&c=14",
+   "tag": "Universal Robots",
+   "lang": "ko",
+   "company": "Universal Robots"
+  },
+  {
+   "line": "테라다인이 AI 인프라 제조 자동화 기업 브라이트 머신즈에 전략적 투자를 단행했다.",
+   "url": "https://www.irobotnews.com/news/articleView.html?idxno=48929",
+   "source": "로봇신문",
+   "date": "2026-10-12T01:45",
+   "image": "https://www.bing.com/th?id=ONUT.m9XlkJPRxTU2hee-RyTimw&pid=News&w=640&h=360&c=14",
+   "tag": "Universal Robots",
+   "lang": "ko",
+   "company": "Universal Robots"
   }
  ],
  "doosan": [
   {
-   "line": "두산로보틱스가 국산 AI 반도체 기반 피지컬 AI 로봇 개발 등 989억원 규모 국책과제 2건을 맡는다.",
-   "url": "https://www.fnnews.com/news/202610060905468356",
-   "source": "파이낸셜뉴스",
-   "date": "2026-10-06T11:04",
-   "image": "https://www.bing.com/th?id=ONUT.mrNEFhWGqYpEgPtt6BxJ0g&pid=News&w=640&h=360&c=14",
+   "line": "두산에너빌리티가 스페이스XAI에 380㎿ 가스터빈을 처음 수출하며 북미 시장 공략에 나섰다.",
+   "url": "https://www.yna.co.kr/view/AKR20261006119000003",
+   "source": "연합뉴스",
+   "date": "2026-10-06T14:46",
+   "image": "https://img0.yna.co.kr/etc/inner/KR/2026/10/06/AKR20261006119000003_01_i_P4.jpg",
+   "tag": "두산에너빌리티",
+   "lang": "ko",
+   "company": "두산에너빌리티"
+  },
+  {
+   "line": "두산에너빌리티가 베트남 오몬3 가스복합발전소 건설공사를 8,400억 원에 수주했다.",
+   "url": "https://www.yna.co.kr/view/AKR20261001060400003",
+   "source": "연합뉴스",
+   "date": "2026-10-01T16:00",
+   "image": "",
+   "tag": "두산에너빌리티",
+   "lang": "ko",
+   "company": "두산에너빌리티"
+  },
+  {
+   "line": "두산로보틱스가 국산 AI 반도체를 활용한 피지컬 AI 개발 등 국책과제 2건을 수주했다.",
+   "url": "https://www.newsis.com/view/NISX20261006_0003814993",
+   "source": "뉴시스",
+   "date": "2026-10-06T10:05",
+   "image": "https://img1.newsis.com/2024/10/23/NISI20241023_0001683427_web.jpg",
    "tag": "두산로보틱스",
    "lang": "ko",
    "company": "두산로보틱스"
   },
   {
-   "line": "두산에너빌리티가 베트남 오몬3 가스복합발전소 건설공사를 8400억원에 수주했다.",
-   "url": "https://www.yna.co.kr/view/PYH20261001054300003",
-   "source": "연합뉴스",
-   "date": "2026-10-01T16:00",
-   "image": "https://img9.yna.co.kr/photo/yna/YH/2026/10/01/PYH2026100105430000301_P4.jpg",
-   "tag": "두산에너빌리티",
+   "line": "두산로보틱스와 딥엑스가 AI·로봇을 결합한 원전 용접 솔루션을 공동 개발해 2030년 상용화한다.",
+   "url": "https://www.edaily.co.kr/News/Read?newsId=03745766645610296&mediaCodeNo=257",
+   "source": "이데일리",
+   "date": "2026-10-06T13:59",
+   "image": "https://image.edaily.co.kr/images/Photo/files/NP/S/2026/10/PS26100600862.jpg",
+   "tag": "두산로보틱스",
    "lang": "ko",
-   "company": "두산에너빌리티"
+   "company": "두산로보틱스"
   },
   {
-   "line": "두산에너빌리티가 스페이스XAI에 공급할 국내 제작 첫 가스터빈을 미국으로 출하했다.",
-   "url": "https://www.yna.co.kr/view/PYH20261006155100013",
-   "source": "연합뉴스",
-   "date": "2026-10-06T15:03",
-   "image": "https://img3.yna.co.kr/photo/yna/YH/2026/10/06/PYH2026100615510001300_P4.jpg",
-   "tag": "두산에너빌리티",
+   "line": "세이지가 두산로보틱스 컨소시엄에 합류해 국산 AI 반도체 기반 협동로봇 개발에 참여한다.",
+   "url": "https://www.edaily.co.kr/News/Read?newsId=02351766645612592&mediaCodeNo=257",
+   "source": "이데일리",
+   "date": "2026-10-13T09:11",
+   "image": "https://image.edaily.co.kr/images/Photo/files/NP/S/2026/10/PS26101300235.jpg",
+   "tag": "두산로보틱스",
    "lang": "ko",
-   "company": "두산에너빌리티"
+   "company": "두산로보틱스"
   },
   {
-   "line": "두산그룹의 미국 자회사 하이엑시엄이 나스닥 상장을 추진하며 IPO 절차에 들어갔다.",
-   "url": "https://signal.sedaily.com/article/20096705?ref=zum",
-   "source": "서울경제",
-   "date": "2026-09-30T19:16",
-   "image": "https://www.bing.com/th?id=ONUT.ouxwf9tsdtWGiX1NLAmzrg&pid=News&w=640&h=360&c=14",
-   "tag": "두산퓨얼셀",
+   "line": "모빌린트가 LG전자·두산로보틱스·대동과 국산 NPU를 로봇 등에 적용하는 실증을 추진한다.",
+   "url": "https://www.etnews.com/20260928000302",
+   "source": "전자신문",
+   "date": "2026-09-28T16:00",
+   "image": "https://img.etnews.com/news/article/2026/09/28/news-p.v1.20260928.dd8569990c22489eb377a01a95b7ac59_P2.jpg",
+   "tag": "두산로보틱스",
    "lang": "ko",
-   "company": "두산퓨얼셀"
+   "company": "두산로보틱스"
   },
   {
-   "line": "두산로보틱스가 로봇이 주변을 살피며 이동하는 지능형 로봇 ‘스캔앤고’를 선보였다.",
+   "line": "두산로보틱스가 지능형 로봇 신제품 ‘스캔앤고’를 선보였다.",
    "url": "https://zdnet.co.kr/view/?no=20261007100648",
    "source": "지디넷코리아",
    "date": "2026-10-07T10:31",
@@ -343,7 +364,7 @@
    "company": "두산로보틱스"
   },
   {
-   "line": "두산로보틱스는 로봇 데이터가 부족한 현실을 현장 적용으로 보완해 기술 격차를 좁히겠다고 밝혔다.",
+   "line": "두산로보틱스가 로봇 데이터 부족 문제를 현장 중심으로 보완해 AI 경쟁력 격차를 줄이겠다고 밝혔다.",
    "url": "https://zdnet.co.kr/view/?no=20261007131910",
    "source": "지디넷코리아",
    "date": "2026-10-07T13:33",
@@ -353,27 +374,17 @@
    "company": "두산로보틱스"
   },
   {
-   "line": "모빌린트가 LG전자·두산로보틱스·대동과 국산 NPU를 로봇과 가전에 적용하는 실증에 나선다.",
-   "url": "https://www.etnews.com/20260928000302",
-   "source": "전자신문",
-   "date": "2026-09-28T16:00",
-   "image": "",
-   "tag": "두산로보틱스",
-   "lang": "ko",
-   "company": "두산로보틱스"
-  },
-  {
-   "line": "두산밥캣이 AI 건설장비를 도입해 작업 효율과 정비, 안전 분야를 개선한다.",
-   "url": "https://www.edaily.co.kr/News/Read?newsId=01449766645582744&mediaCodeNo=257",
+   "line": "에이딘로보틱스가 두산 협동로봇에 촉각 센서를 적용해 정밀한 작업을 구현한다.",
+   "url": "https://www.edaily.co.kr/News/Read?newsId=02827366645608656&mediaCodeNo=257",
    "source": "이데일리",
-   "date": "2026-09-22T16:00",
-   "image": "https://image.edaily.co.kr/images/Photo/files/NP/S/2026/09/PS26092200019.jpg",
-   "tag": "두산밥캣",
+   "date": "2026-10-01T09:00",
+   "image": "https://image.edaily.co.kr/images/Photo/files/NP/S/2026/10/PS26100100422.jpg",
+   "tag": "두산",
    "lang": "ko",
-   "company": "두산밥캣"
+   "company": "두산"
   },
   {
-   "line": "두산이 50년간 축적한 CCL 기술을 바탕으로 반도체 소재 사업 확장에 나선다.",
+   "line": "두산이 50년간 축적한 CCL 기술을 바탕으로 반도체 미래 소재 사업 확대에 나선다.",
    "url": "https://www.edaily.co.kr/News/Read?newsId=03952406645612264&mediaCodeNo=257",
    "source": "이데일리",
    "date": "2026-10-12T17:02",
@@ -383,32 +394,11 @@
    "company": "두산"
   },
   {
-   "line": "두산이 데이터센터에 에너지를 공급하며 AI 사업과 에너지 공급망을 넓히고 있다.",
+   "line": "두산이 데이터센터 에너지 공급망을 넓히며 AI 종합기업으로 사업 영역을 확장한다.",
    "url": "https://www.hankyung.com/article/2026101139881",
    "source": "한국경제",
    "date": "2026-10-11T16:37",
    "image": "https://img.hankyung.com/photo/202610/AA.46009559.1.jpg",
-   "tag": "두산",
-   "lang": "ko",
-   "company": "두산"
-  },
-  {
-   "line": "두산로보틱스 신임 대표가 AI 사업을 수익성으로 연결할 수 있을지가 경영 과제로 떠올랐다.",
-   "url": "https://www.koreatimes.co.kr/business/companies/20260922/doosan-robotics-new-ceo-faces-test-of-turning-ai-bet-into-profits",
-   "source": "코리아타임스",
-   "date": "2026-09-22T16:00",
-   "image": "https://newsimg.koreatimes.co.kr/2026/09/22/8175e974-d0b3-4850-b69f-44f3a3c59ff3.jpg",
-   "tag": "두산로보틱스",
-   "lang": "en",
-   "original": "Doosan Robotics' new CEO faces test of turning AI bet into profits",
-   "company": "두산로보틱스"
-  },
-  {
-   "line": "두산그룹이 창업 130년을 맞아 에너지와 AI 인프라를 축으로 사업 지도를 재편하고 있다.",
-   "url": "https://www.newsis.com/view/NISX20260921_0003799081",
-   "source": "뉴시스",
-   "date": "2026-09-26T16:00",
-   "image": "https://img1.newsis.com/2026/08/27/NISI20260827_0021413366_web.jpg",
    "tag": "두산",
    "lang": "ko",
    "company": "두산"
